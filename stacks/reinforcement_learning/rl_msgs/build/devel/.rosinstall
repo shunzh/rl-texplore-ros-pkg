@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_msgs/build/devel/setup.sh

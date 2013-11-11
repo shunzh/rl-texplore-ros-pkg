@@ -128,7 +128,7 @@ Directions:
      Another thing we can do using ros is make live plots. To make a live plot
      of reward per episode, type:
 
-     $ rxplot /rl_agent/rl_experiment_info/episode_reward
+     $ rqt_plot /rl_agent/rl_experiment_info/episode_reward
 
      One more thing that can be done is to record all the messages being passed
      in order to view, replay, or plot them later. To record all the messages
