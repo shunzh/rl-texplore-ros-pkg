@@ -16,8 +16,6 @@
 #ifndef ASTERIX_HH_
 #define ASTERIX_HH_
 
-#define KILL_R -1000
-
 #include <rl_common/core.hh>
 
 class Asterix: public Environment {
@@ -41,9 +39,12 @@ protected:
   typedef std::pair<float,float> coord_t;
   enum action_t {NORTH, EAST, SOUTH, WEST, STAY};
   enum direct_t {LEFT, RIGHT, VANISH};
+  enum object_t {GHOST, FOOD};
 
   bool killed() const;
+  bool bonus() const;
   void updateFeatures();
+  void updatePhase();
   void print();
 
 private:
@@ -60,10 +61,12 @@ private:
 
   std::vector<float> s;
 
-  // ghost[i] represent the location of ghost at line i
-  int* ghost;
+  // object[i] represent the location of object at line i
+  int* object;
   // direction[i[ is the direction of movement of the ghost at row i
   direct_t* direction;
+  // object category for row i
+  object_t* objCate;
   // record number of steps
   int steps;
   int rewardGot;
