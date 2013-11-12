@@ -5,10 +5,9 @@
  * - Only agent and ghosts, ghosts would simply walk back and forth
  *
  * features:
- * self position
- * position of ghost in the previous row
- * position of ghost in the current row
- * position of ghost in the next row
+ * horizontal distance to the ghost in the current row
+ * horizontal distance to the ghost in the previous row
+ * horizontal distance to the ghost in the next row
  *
  *  Created on: Nov 10, 2013
  *      Author: menie
@@ -64,6 +63,8 @@ private:
   int* ghost;
   // direction[i[ is the direction of movement of the ghost at row i
   direct_t* direction;
+  // record number of steps
+  int steps;
 };
 
 #endif /* ASTERIX_HH_ */

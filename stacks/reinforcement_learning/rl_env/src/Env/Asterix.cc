@@ -8,15 +8,16 @@
 #include <rl_env/Asterix.hh>
 
 Asterix::Asterix(Random &rand, bool extraVariation, bool stoch):
-	height(6), width(10),
+	height(6), width(15),
 	pos(2),
-	s(4),
+	s(3),
 	ns(pos[0]),
 	ew(pos[1]),
 	extraVar(extraVariation),
 	noisy(stoch),
 	rng(rand)
 {
+	steps = 0;
 	ghost = new int[height];
 	direction = new direct_t[height];
 
@@ -77,20 +78,22 @@ float Asterix::apply(int action) {
 	// survival check, again
 	if (killed()) return KILL_R;
 
+	// maintaining stuff
 	updateFeatures();
+	steps++;
 
-	return -0.1;
+	// reward for being alive
+	return 1;
 }
 
 void Asterix::updateFeatures() {
-	s[0] = ew;
-	s[2] = ghost[ns];
+	s[0] = ghost[ns] - ew;
 
-	if (ns > 0) s[1] = ghost[ns - 1];
-	else s[1] = ghost[ns]; // if no previous row, use the position in this row
+	if (ns > 0) s[1] = ghost[ns - 1] - ew;
+	else s[1] = ghost[ns] - ew; // if no previous row, use the position in this row
 
-	if (ns < height) s[3] = ghost[ns + 1];
-	else s[3] = ghost[ns]; // if no following row, use the position in this row
+	if (ns < height) s[2] = ghost[ns + 1] - ew;
+	else s[2] = ghost[ns] - ew; // if no following row, use the position in this row
 }
 
 bool Asterix::killed() const {
@@ -98,7 +101,7 @@ bool Asterix::killed() const {
 }
 
 bool Asterix::terminal() const {
-	return killed();
+	return killed() || steps > 200;
 }
 
 void Asterix::reset() {
@@ -128,13 +131,11 @@ int Asterix::getNumActions() {
 void Asterix::getMinMaxFeatures(std::vector<float> *minFeat, std::vector<float> *maxFeat) {
 	minFeat->resize(s.size(), -width);
 	maxFeat->resize(s.size(), width);
-
-	(*minFeat)[0] = 0; // position
 }
 
 void Asterix::getMinMaxReward(float* minR, float* maxR) {
 	*minR = KILL_R;
-	*maxR = 0;
+	*maxR = 1;
 }
 
 std::vector<experience> Asterix::getSeedings() {
