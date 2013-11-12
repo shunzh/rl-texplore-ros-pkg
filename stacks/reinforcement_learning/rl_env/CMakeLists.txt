@@ -42,6 +42,7 @@ rosbuild_add_library(envlib
   src/Env/gridworld.cc
   src/Env/stocks.cc
   src/Env/LightWorld.cc
+  src/Env/Asterix.cc
 )
 
 rosbuild_add_executable(env

@@ -838,6 +838,78 @@ CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o.provides: CMakeFiles/envlib.dir/sr
 
 CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o.provides.build: CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o
 
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: CMakeFiles/envlib.dir/flags.make
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: ../src/Env/Asterix.cc
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: ../manifest.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/cpp_common/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rostime/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roscpp_traits/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roscpp_serialization/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/genmsg/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/genpy/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/message_runtime/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/std_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosconsole/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosgraph_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/xmlrpcpp/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roscpp/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_msgs/manifest.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/geometry_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/message_filters/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosgraph/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosclean/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/catkin/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rospack/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roslib/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosmaster/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosout/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosparam/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roslaunch/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rospy/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/topic_tools/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosbag/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rostopic/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosnode/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosmsg/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosservice/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/roswtf/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/sensor_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/console_bridge/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/gencpp/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/genlisp/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/message_generation/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/actionlib_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/tf2_msgs/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/tf2/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rosunit/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/rostest/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/actionlib/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/tf2_py/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/tf2_ros/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /opt/ros/hydro/share/tf/package.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_common/manifest.xml
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o: /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_msgs/msg_gen/generated
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/build/CMakeFiles $(CMAKE_PROGRESS_12)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/envlib.dir/src/Env/Asterix.cc.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/envlib.dir/src/Env/Asterix.cc.o -c /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/src/Env/Asterix.cc
+
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/envlib.dir/src/Env/Asterix.cc.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/src/Env/Asterix.cc > CMakeFiles/envlib.dir/src/Env/Asterix.cc.i
+
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/envlib.dir/src/Env/Asterix.cc.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/src/Env/Asterix.cc -o CMakeFiles/envlib.dir/src/Env/Asterix.cc.s
+
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.requires:
+.PHONY : CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.requires
+
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.provides: CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.requires
+	$(MAKE) -f CMakeFiles/envlib.dir/build.make CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.provides.build
+.PHONY : CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.provides
+
+CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.provides.build: CMakeFiles/envlib.dir/src/Env/Asterix.cc.o
+
 # Object files for target envlib
 envlib_OBJECTS = \
 "CMakeFiles/envlib.dir/src/Env/tworooms.cc.o" \
@@ -850,7 +922,8 @@ envlib_OBJECTS = \
 "CMakeFiles/envlib.dir/src/Env/energyrooms.cc.o" \
 "CMakeFiles/envlib.dir/src/Env/gridworld.cc.o" \
 "CMakeFiles/envlib.dir/src/Env/stocks.cc.o" \
-"CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o"
+"CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o" \
+"CMakeFiles/envlib.dir/src/Env/Asterix.cc.o"
 
 # External object files for target envlib
 envlib_EXTERNAL_OBJECTS =
@@ -866,6 +939,7 @@ envlib_EXTERNAL_OBJECTS =
 ../lib/libenvlib.so: CMakeFiles/envlib.dir/src/Env/gridworld.cc.o
 ../lib/libenvlib.so: CMakeFiles/envlib.dir/src/Env/stocks.cc.o
 ../lib/libenvlib.so: CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o
+../lib/libenvlib.so: CMakeFiles/envlib.dir/src/Env/Asterix.cc.o
 ../lib/libenvlib.so: CMakeFiles/envlib.dir/build.make
 ../lib/libenvlib.so: CMakeFiles/envlib.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX shared library ../lib/libenvlib.so"
@@ -886,6 +960,7 @@ CMakeFiles/envlib.dir/requires: CMakeFiles/envlib.dir/src/Env/energyrooms.cc.o.r
 CMakeFiles/envlib.dir/requires: CMakeFiles/envlib.dir/src/Env/gridworld.cc.o.requires
 CMakeFiles/envlib.dir/requires: CMakeFiles/envlib.dir/src/Env/stocks.cc.o.requires
 CMakeFiles/envlib.dir/requires: CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o.requires
+CMakeFiles/envlib.dir/requires: CMakeFiles/envlib.dir/src/Env/Asterix.cc.o.requires
 .PHONY : CMakeFiles/envlib.dir/requires
 
 CMakeFiles/envlib.dir/clean:

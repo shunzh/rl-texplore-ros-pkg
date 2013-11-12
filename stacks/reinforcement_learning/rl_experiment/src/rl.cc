@@ -22,6 +22,7 @@
 #include <rl_env/MountainCar.hh>
 #include <rl_env/CartPole.hh>
 #include <rl_env/LightWorld.hh>
+#include <rl_env/Asterix.hh>
 
 
 ////////////
@@ -748,6 +749,12 @@ int main(int argc, char **argv) {
   else if (strcmp(envType, "fuelworld") == 0){
     if (PRINTS) cout << "Environment: FuelWorld\n";
     e = new FuelRooms(rng, highvar, stochastic);
+  }
+
+  // naive asterix domain
+  else if (strcmp(envType, "asterix") == 0){
+    if (PRINTS) cout << "Environment: Asterix\n";
+    e = new Asterix(rng, highvar, stochastic);
   }
 
   // stocks

@@ -4,6 +4,12 @@
  * Only implement simple features of Asterix:
  * - Only agent and ghosts, ghosts would simply walk back and forth
  *
+ * features:
+ * self position
+ * position of ghost in the previous row
+ * position of ghost in the current row
+ * position of ghost in the next row
+ *
  *  Created on: Nov 10, 2013
  *      Author: menie
  */
@@ -11,7 +17,9 @@
 #ifndef ASTERIX_HH_
 #define ASTERIX_HH_
 
-#include "core.hh"
+#define KILL_R -1000
+
+#include <rl_common/core.hh>
 
 class Asterix: public Environment {
 public:
@@ -32,16 +40,30 @@ public:
 
 protected:
   typedef std::pair<float,float> coord_t;
-  enum action_t {NORTH, EAST, SOUTH, WEST};
+  enum action_t {NORTH, EAST, SOUTH, WEST, STAY};
+  enum direct_t {LEFT, RIGHT};
+
+  bool killed() const;
+  void updateFeatures();
 
 private:
   const int height;
   const int width;
-  coord_t goal;
 
   const bool extraVar;
   const bool noisy;
   Random &rng;
+
+  std::vector<int> pos;
+  int &ns;
+  int &ew;
+
+  std::vector<float> s;
+
+  // ghost[i] represent the location of ghost at line i
+  int* ghost;
+  // direction[i[ is the direction of movement of the ghost at row i
+  direct_t* direction;
 };
 
 #endif /* ASTERIX_HH_ */

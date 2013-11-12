@@ -11,6 +11,11 @@ SET(CMAKE_FORCE_UNIX_PATHS 1)
 # The C and CXX include file search paths:
 SET(CMAKE_C_INCLUDE_PATH
   "/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_experiment/include"
+  "/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_common/include"
+  "/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_agent/include"
+  "/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_msgs/msg_gen/cpp/include"
+  "/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/include"
+  "/opt/ros/hydro/include"
   "/usr/src/gtest/include"
   "/usr/src/gtest"
   )

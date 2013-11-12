@@ -97,6 +97,7 @@ float FuelRooms::apply(int action) {
   
   return r;
   
+  // Shun: What????????????
   std::cerr << "Unreachable point reached in FuelRooms::apply!!!\n";
   return 0; // unreachable, I hope
 }

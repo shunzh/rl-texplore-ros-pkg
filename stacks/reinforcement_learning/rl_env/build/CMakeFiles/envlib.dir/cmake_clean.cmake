@@ -10,6 +10,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/envlib.dir/src/Env/gridworld.cc.o"
   "CMakeFiles/envlib.dir/src/Env/stocks.cc.o"
   "CMakeFiles/envlib.dir/src/Env/LightWorld.cc.o"
+  "CMakeFiles/envlib.dir/src/Env/Asterix.cc.o"
   "../lib/libenvlib.pdb"
   "../lib/libenvlib.so"
 )

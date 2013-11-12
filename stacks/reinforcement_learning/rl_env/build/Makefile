@@ -435,6 +435,30 @@ gtest_main/fast:
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
+src/Env/Asterix.o: src/Env/Asterix.cc.o
+.PHONY : src/Env/Asterix.o
+
+# target to build an object file
+src/Env/Asterix.cc.o:
+	$(MAKE) -f CMakeFiles/envlib.dir/build.make CMakeFiles/envlib.dir/src/Env/Asterix.cc.o
+.PHONY : src/Env/Asterix.cc.o
+
+src/Env/Asterix.i: src/Env/Asterix.cc.i
+.PHONY : src/Env/Asterix.i
+
+# target to preprocess a source file
+src/Env/Asterix.cc.i:
+	$(MAKE) -f CMakeFiles/envlib.dir/build.make CMakeFiles/envlib.dir/src/Env/Asterix.cc.i
+.PHONY : src/Env/Asterix.cc.i
+
+src/Env/Asterix.s: src/Env/Asterix.cc.s
+.PHONY : src/Env/Asterix.s
+
+# target to generate assembly for a file
+src/Env/Asterix.cc.s:
+	$(MAKE) -f CMakeFiles/envlib.dir/build.make CMakeFiles/envlib.dir/src/Env/Asterix.cc.s
+.PHONY : src/Env/Asterix.cc.s
+
 src/Env/CartPole.o: src/Env/CartPole.cc.o
 .PHONY : src/Env/CartPole.o
 
@@ -758,6 +782,9 @@ help:
 	@echo "... tests"
 	@echo "... gtest"
 	@echo "... gtest_main"
+	@echo "... src/Env/Asterix.o"
+	@echo "... src/Env/Asterix.i"
+	@echo "... src/Env/Asterix.s"
 	@echo "... src/Env/CartPole.o"
 	@echo "... src/Env/CartPole.i"
 	@echo "... src/Env/CartPole.s"

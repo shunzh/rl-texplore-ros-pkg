@@ -106,6 +106,10 @@ vector
 map
 -
 
+/home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/include/rl_env/Asterix.hh
+rl_common/core.hh
+-
+
 /home/menie/workspace/rl-texplore-ros-pkg/stacks/reinforcement_learning/rl_env/include/rl_env/CartPole.hh
 set
 -
@@ -238,6 +242,8 @@ rl_env/MountainCar.hh
 rl_env/CartPole.hh
 -
 rl_env/LightWorld.hh
+-
+rl_env/Asterix.hh
 -
 rl_agent/QLearner.hh
 -
