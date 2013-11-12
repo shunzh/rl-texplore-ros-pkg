@@ -35,7 +35,8 @@ const std::vector<float> &Asterix::sensation() const {
 }
 
 float Asterix::apply(int action) {
-	updatePhase();
+	// TODO at some frequency, reset food / ghost
+
 
 	// advance of agent
 	if (action == NORTH && ns > 0) {
@@ -111,7 +112,11 @@ bool Asterix::killed() const {
 }
 
 bool Asterix::bonus() const {
-	return object[ns] == ew && objCate[ns] == FOOD;
+	if (object[ns] == ew && objCate[ns] == FOOD) {
+		object[ns] = VANISH;
+		return true;
+	}
+	else return false;
 }
 
 bool Asterix::terminal() const {
@@ -136,6 +141,8 @@ void Asterix::reset() {
 			object[i] = width - 1;
 		}
 	}
+
+	updatePhase();
 
 	steps = 0;
 }
