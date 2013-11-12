@@ -82,6 +82,8 @@ float Asterix::apply(int action) {
 	updateFeatures();
 	steps++;
 
+	print();
+
 	// reward for being alive
 	return 1;
 }
@@ -138,6 +140,20 @@ void Asterix::getMinMaxFeatures(std::vector<float> *minFeat, std::vector<float> 
 void Asterix::getMinMaxReward(float* minR, float* maxR) {
 	*minR = KILL_R;
 	*maxR = 1;
+}
+
+void Asterix::print() {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			if (ghost[i] == j)
+				std::cout << "G";
+			else if (ns == i && ew == j)
+				std::cout << "A";
+			else
+				std::cout << " ";
+		}
+		std::cout << std::endl;
+	}
 }
 
 std::vector<experience> Asterix::getSeedings() {

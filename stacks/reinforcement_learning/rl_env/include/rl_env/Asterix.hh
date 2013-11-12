@@ -40,10 +40,11 @@ public:
 protected:
   typedef std::pair<float,float> coord_t;
   enum action_t {NORTH, EAST, SOUTH, WEST, STAY};
-  enum direct_t {LEFT, RIGHT};
+  enum direct_t {LEFT, RIGHT, VANISH};
 
   bool killed() const;
   void updateFeatures();
+  void print();
 
 private:
   const int height;
