@@ -122,6 +122,8 @@ void Asterix::reset() {
 			ghost[i] = width - 1;
 		}
 	}
+
+	steps = 0;
 }
 
 int Asterix::getNumActions() {
