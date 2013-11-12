@@ -65,6 +65,7 @@ private:
   direct_t* direction;
   // record number of steps
   int steps;
+  int rewardGot;
 };
 
 #endif /* ASTERIX_HH_ */

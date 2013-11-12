@@ -141,7 +141,7 @@ void Asterix::getMinMaxReward(float* minR, float* maxR) {
 }
 
 std::vector<experience> Asterix::getSeedings() {
-	// return seedings
+	// return seedingsW
 	std::vector<experience> seeds;
 
 	reset();
