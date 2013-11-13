@@ -38,13 +38,14 @@ public:
 protected:
   typedef std::pair<float,float> coord_t;
   enum action_t {NORTH, EAST, SOUTH, WEST, STAY};
-  enum direct_t {LEFT, RIGHT, VANISH};
-  enum object_t {GHOST, FOOD};
+  enum direct_t {LEFT, RIGHT};
+  enum object_t {GHOST, FOOD, NOTHING};
 
   bool killed() const;
   bool bonus() const;
   void updateFeatures();
-  void updatePhase();
+  void resetPhase();
+  void setPhase();
   void print();
 
 private:
@@ -69,7 +70,8 @@ private:
   object_t* objCate;
   // record number of steps
   int steps;
-  int rewardGot;
+  // number of food picked
+  int foodPicked;
 };
 
 #endif /* ASTERIX_HH_ */

@@ -17,7 +17,6 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch):
 	noisy(stoch),
 	rng(rand)
 {
-	steps = 0;
 	object = new int[height];
 	direction = new direct_t[height];
 	objCate = new object_t[height];
@@ -36,7 +35,7 @@ const std::vector<float> &Asterix::sensation() const {
 
 float Asterix::apply(int action) {
 	// TODO at some frequency, reset food / ghost
-
+	setPhase();
 
 	// advance of agent
 	if (action == NORTH && ns > 0) {
@@ -88,12 +87,19 @@ float Asterix::apply(int action) {
 	updateFeatures();
 	steps++;
 
+	// debug
+	print();
+
 	// reward for being alive
 	return 1;
 }
 
-void Asterix::updatePhase() {
-	// TODO trivial
+void Asterix::setPhase() {
+	if (object[0] == 0)
+		for (int i = 0; i < height; i++) objCate[i] = GHOST;
+}
+
+void Asterix::resetPhase() {
 	for (int i = 0; i < height; i++) objCate[i] = GHOST;
 }
 
@@ -113,7 +119,8 @@ bool Asterix::killed() const {
 
 bool Asterix::bonus() const {
 	if (object[ns] == ew && objCate[ns] == FOOD) {
-		object[ns] = VANISH;
+		object[ns] = NOTHING;
+		foodPicked++;
 		return true;
 	}
 	else return false;
@@ -129,7 +136,6 @@ void Asterix::reset() {
 	ew = width / 2;
 
 	// set ghosts
-	object[0] = -1; // no ghost in the first row
 	for (int i = 0; i < height; i++) {
 		if (i % 2 == 0) {
 			// place the ghost at the left-most side
@@ -142,7 +148,7 @@ void Asterix::reset() {
 		}
 	}
 
-	updatePhase();
+	resetPhase();
 
 	steps = 0;
 }
@@ -164,8 +170,10 @@ void Asterix::getMinMaxReward(float* minR, float* maxR) {
 void Asterix::print() {
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			if (object[i] == j)
+			if (object[i] == j && objCate[i] == GHOST)
 				std::cout << "X";
+			else if (object[i] == j && objCate[i] == FOOD)
+				std::cout << "O";
 			else if (ns == i && ew == j)
 				std::cout << "A";
 			else
@@ -173,6 +181,7 @@ void Asterix::print() {
 		}
 		std::cout << std::endl;
 	}
+	std::cout << "==========================" << std::endl;
 }
 
 std::vector<experience> Asterix::getSeedings() {
