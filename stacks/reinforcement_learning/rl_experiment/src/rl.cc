@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
   char time_buf[21];
   time_t now;
   time(&now);
-  strftime(time_buf, 21, "%Y-%m-%dT%H:%S:%M", gmtime(&now));
+  strftime(time_buf, 21, "%Y-%m-%dT%H:%M:%S", gmtime(&now));
 
   // change some of these parameters based on command line args
 
