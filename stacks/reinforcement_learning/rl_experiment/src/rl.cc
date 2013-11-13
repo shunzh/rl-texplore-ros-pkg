@@ -44,7 +44,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 
-unsigned NUMEPISODES = 150; //10; //200; //500; //200;
+unsigned NUMEPISODES = 100; //10; //200; //500; //200;
 const unsigned NUMTRIALS = 1; //30; //30; //5; //30; //30; //50
 unsigned MAXSTEPS = 1000; // per episode
 bool PRINTS = false;
@@ -130,6 +130,16 @@ int main(int argc, char **argv) {
   bool highvar = false;
   int history = 0;
   int seed = 1;
+
+  ostream* out = &std::cout; // cout as default
+  char fileName[100];
+  ofstream outputFile;
+
+  char time_buf[21];
+  time_t now;
+  time(&now);
+  strftime(time_buf, 21, "%Y-%m-%dT%H:%S:%M", gmtime(&now));
+
   // change some of these parameters based on command line args
 
   // parse agent type
@@ -221,7 +231,8 @@ int main(int argc, char **argv) {
     {"lag", 0, 0, 7},
     {"nolag", 0, 0, 8},
     {"highvar", 0, 0, 11},
-    {"nepisodes", 1, 0, 12}
+    {"nepisodes", 1, 0, 12},
+    {"output", 1, 0, 14}
 
   };
 
@@ -601,6 +612,14 @@ int main(int argc, char **argv) {
       cout << "Num Episodes: " << NUMEPISODES << endl;
       break;
 
+    case 14:
+      strcat(fileName, optarg);
+      strcat(fileName, time_buf);
+      outputFile.open(fileName);
+
+      out = &outputFile;
+      break;
+
     case 'h':
     case '?':
     case 0:
@@ -754,7 +773,7 @@ int main(int argc, char **argv) {
   // naive asterix domain
   else if (strcmp(envType, "asterix") == 0){
     if (PRINTS) cout << "Environment: Asterix\n";
-    e = new Asterix(rng, highvar, stochastic);
+    e = new Asterix(rng, highvar, stochastic, PRINTS);
   }
 
   // stocks
@@ -990,7 +1009,7 @@ int main(int argc, char **argv) {
         }
 
         e->reset();
-        std::cerr << sum << endl;
+        (*out) << sum << endl;
 
         rsum += sum;
 

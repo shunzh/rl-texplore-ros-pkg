@@ -7,7 +7,7 @@
 
 #include <rl_env/Asterix.hh>
 
-Asterix::Asterix(Random &rand, bool extraVariation, bool stoch):
+Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 	height(6), width(15),
 	pos(2),
 	s(3),
@@ -15,7 +15,8 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch):
 	ew(pos[1]),
 	extraVar(extraVariation),
 	noisy(stoch),
-	rng(rand)
+	rng(rand),
+	prints(p)
 {
 	object = new int[height];
 	direction = new direct_t[height];
@@ -52,7 +53,7 @@ float Asterix::apply(int action) {
 	}
 
 	// survival check
-	if (killed()) return 0;
+	if (killed()) return -1000;
 	if (bonus()) return 200;
 
 	// advance of ghosts
@@ -80,7 +81,7 @@ float Asterix::apply(int action) {
 	}
 
 	// survival check, again
-	if (killed()) return 0;
+	if (killed()) return -1000;
 	if (bonus()) return 200;
 
 	// maintaining stuff
@@ -88,7 +89,7 @@ float Asterix::apply(int action) {
 	steps++;
 
 	// debug
-	print();
+	if (prints) print();
 
 	// reward for being alive
 	return 1;
@@ -117,7 +118,7 @@ bool Asterix::killed() const {
 	return object[ns] == ew && objCate[ns] == GHOST;
 }
 
-bool Asterix::bonus() const {
+bool Asterix::bonus() {
 	if (object[ns] == ew && objCate[ns] == FOOD) {
 		object[ns] = NOTHING;
 		foodPicked++;
@@ -163,7 +164,7 @@ void Asterix::getMinMaxFeatures(std::vector<float> *minFeat, std::vector<float> 
 }
 
 void Asterix::getMinMaxReward(float* minR, float* maxR) {
-	*minR = 0;
+	*minR = -1000;
 	*maxR = 1;
 }
 

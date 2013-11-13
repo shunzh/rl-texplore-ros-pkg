@@ -20,7 +20,7 @@
 
 class Asterix: public Environment {
 public:
-  Asterix(Random &rand, bool extraVariation, bool stoch);
+  Asterix(Random &rand, bool extraVariation, bool stoch, bool p);
   virtual ~Asterix();
 
   virtual const std::vector<float> &sensation() const;
@@ -42,7 +42,7 @@ protected:
   enum object_t {GHOST, FOOD, NOTHING};
 
   bool killed() const;
-  bool bonus() const;
+  bool bonus();
   void updateFeatures();
   void resetPhase();
   void setPhase();
@@ -54,6 +54,7 @@ private:
 
   const bool extraVar;
   const bool noisy;
+  const bool prints;
   Random &rng;
 
   std::vector<int> pos;

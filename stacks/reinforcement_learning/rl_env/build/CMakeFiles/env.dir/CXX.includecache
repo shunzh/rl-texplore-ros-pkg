@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../include/rl_env/Asterix.hh
+rl_common/core.hh
+-
+
 ../include/rl_env/CartPole.hh
 set
 -
@@ -182,6 +186,8 @@ rl_env/MountainCar.hh
 rl_env/CartPole.hh
 -
 rl_env/LightWorld.hh
+-
+rl_env/Asterix.hh
 -
 getopt.h
 -
