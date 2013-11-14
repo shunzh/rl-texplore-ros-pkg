@@ -71,7 +71,7 @@ private:
   object_t* objCate;
   // record number of steps
   int steps;
-  // number of food picked
+  // TODO number of food picked
   int foodPicked;
 };
 

@@ -110,7 +110,7 @@ void Asterix::updateFeatures() {
 	if (ns > 0) s[1] = object[ns - 1] - ew;
 	else s[1] = object[ns] - ew; // if no previous row, use the position in this row
 
-	if (ns < height) s[2] = object[ns + 1] - ew;
+	if (ns < height - 1) s[2] = object[ns + 1] - ew;
 	else s[2] = object[ns] - ew; // if no following row, use the position in this row
 }
 
