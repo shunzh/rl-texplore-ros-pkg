@@ -10,7 +10,7 @@
 Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 	height(6), width(15),
 	pos(2),
-	s(3),
+	s(4),
 	ns(pos[0]),
 	ew(pos[1]),
 	extraVar(extraVariation),
@@ -18,7 +18,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 	rng(rand),
 	prints(p)
 {
-	object = new int[height];
+	objPos = new int[height];
 	direction = new direct_t[height];
 	objCate = new object_t[height];
 
@@ -26,7 +26,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 }
 
 Asterix::~Asterix() {
-	delete[] object;
+	delete[] objPos;
 	delete[] direction;
 }
 
@@ -35,8 +35,11 @@ const std::vector<float> &Asterix::sensation() const {
 }
 
 float Asterix::apply(int action) {
-	// TODO at some frequency, reset food / ghost
-	setPhase();
+	float reward = 0;
+
+	if (steps % ((width + 1) * 2) == 0 && steps != 0) {
+		setPhase();
+	}
 
 	// advance of agent
 	if (action == NORTH && ns > 0) {
@@ -54,35 +57,33 @@ float Asterix::apply(int action) {
 
 	// survival check
 	if (killed()) return -1000;
-	if (bonus()) return 200;
+	if (bonus()) reward = 200;
 
-	// advance of ghosts
+	// advance of objects
 	for (int i = 0; i < height; i++) {
 		if (direction[i] == LEFT) {
-			if (object[i] == 0) {
+			if (objPos[i] == -1) {
 				// make a turn
-				object[i] = 1;
 				direction[i] = RIGHT;
 			}
 			else {
-				object[i]--;
+				objPos[i]--;
 			}
 		}
 		else {
-			if (object[i] == width - 1) {
+			if (objPos[i] == width) {
 				// make a turn
-				object[i] = width - 2;
 				direction[i] = LEFT;
 			}
 			else {
-				object[i]++;
+				objPos[i]++;
 			}
 		}
 	}
 
 	// survival check, again
 	if (killed()) return -1000;
-	if (bonus()) return 200;
+	if (bonus()) reward = 200;
 
 	// maintaining stuff
 	updateFeatures();
@@ -92,12 +93,17 @@ float Asterix::apply(int action) {
 	if (prints) print();
 
 	// reward for being alive
-	return 1;
+	return reward + 1;
 }
 
 void Asterix::setPhase() {
-	if (object[0] == 0)
-		for (int i = 0; i < height; i++) objCate[i] = GHOST;
+	object_t obj;
+	if (objCate[0] == GHOST) {
+		obj = FOOD;
+	}
+	else obj = GHOST;
+
+	for (int i = 0; i < height; i++) objCate[i] = obj;
 }
 
 void Asterix::resetPhase() {
@@ -105,22 +111,25 @@ void Asterix::resetPhase() {
 }
 
 void Asterix::updateFeatures() {
-	s[0] = object[ns] - ew;
+	s[0] = objPos[ns] - ew;
 
-	if (ns > 0) s[1] = object[ns - 1] - ew;
-	else s[1] = object[ns] - ew; // if no previous row, use the position in this row
+	if (ns > -1) s[1] = objPos[ns - 1] - ew;
+	else s[1] = objPos[ns] - ew; // if no previous row, use the position in this row
 
-	if (ns < height - 1) s[2] = object[ns + 1] - ew;
-	else s[2] = object[ns] - ew; // if no following row, use the position in this row
+	if (ns < height) s[2] = objPos[ns + 1] - ew;
+	else s[2] = objPos[ns] - ew; // if no following row, use the position in this row
+
+	if (objCate[0] == GHOST) s[3] = 1;
+	else s[3] = 0;
 }
 
 bool Asterix::killed() const {
-	return object[ns] == ew && objCate[ns] == GHOST;
+	return objPos[ns] == ew && objCate[ns] == GHOST;
 }
 
 bool Asterix::bonus() {
-	if (object[ns] == ew && objCate[ns] == FOOD) {
-		object[ns] = NOTHING;
+	if (objPos[ns] == ew && objCate[ns] == FOOD) {
+		objCate[ns] = NOTHING;
 		foodPicked++;
 		return true;
 	}
@@ -141,11 +150,11 @@ void Asterix::reset() {
 		if (i % 2 == 0) {
 			// place the ghost at the left-most side
 			direction[i] = RIGHT;
-			object[i] = 0;
+			objPos[i] = -1;
 		}
 		else {
 			direction[i] = LEFT;
-			object[i] = width - 1;
+			objPos[i] = width;
 		}
 	}
 
@@ -165,15 +174,15 @@ void Asterix::getMinMaxFeatures(std::vector<float> *minFeat, std::vector<float> 
 
 void Asterix::getMinMaxReward(float* minR, float* maxR) {
 	*minR = -1000;
-	*maxR = 1;
+	*maxR = 20;
 }
 
 void Asterix::print() {
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			if (object[i] == j && objCate[i] == GHOST)
+			if (objPos[i] == j && objCate[i] == GHOST)
 				std::cout << "X";
-			else if (object[i] == j && objCate[i] == FOOD)
+			else if (objPos[i] == j && objCate[i] == FOOD)
 				std::cout << "O";
 			else if (ns == i && ew == j)
 				std::cout << "A";

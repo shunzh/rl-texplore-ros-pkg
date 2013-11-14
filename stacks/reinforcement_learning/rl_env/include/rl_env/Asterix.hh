@@ -8,6 +8,7 @@
  * horizontal distance to the ghost in the current row
  * horizontal distance to the ghost in the previous row
  * horizontal distance to the ghost in the next row
+ * ghost / food phase
  *
  *  Created on: Nov 10, 2013
  *      Author: menie
@@ -64,7 +65,7 @@ private:
   std::vector<float> s;
 
   // object[i] represent the location of object at line i
-  int* object;
+  int* objPos;
   // direction[i[ is the direction of movement of the ghost at row i
   direct_t* direction;
   // object category for row i
