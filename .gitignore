@@ -16,3 +16,15 @@
 *.exe
 *.out
 *.app
+
+# buildt files
+stacks/reinforcement_learning/rl_msgs/build
+stacks/reinforcement_learning/rl_msgs/bin
+stacks/reinforcement_learning/rl_common/build
+stacks/reinforcement_learning/rl_common/bin
+stacks/reinforcement_learning/rl_agent/build
+stacks/reinforcement_learning/rl_agent/bin
+stacks/reinforcement_learning/rl_env/build
+stacks/reinforcement_learning/rl_env/bin
+stacks/reinforcement_learning/rl_experiment/build
+stacks/reinforcement_learning/rl_experiment/bin
