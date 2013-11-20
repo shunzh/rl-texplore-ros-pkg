@@ -7,13 +7,13 @@
 
 
 
-MultipleClassifiers::MultipleClassifiers(int id, int modelType, int predType,
+MultipleClassifiers::MultipleClassifiers(int id, std::vector<int> modelTypes, int predType,
                                          int nModels, int trainMode,
                                          int trainFreq,
                                          float featPct, float expPct,
                                          float treeThreshold, bool stoch,
                                          float featRange, Random rng):
-  id(id), modelType(modelType), predType(predType), nModels(nModels),
+  id(id), modelTypes(modelTypes), predType(predType), nModels(nModels),
   mode(trainMode), freq(trainFreq),
   featPct(featPct), expPct(expPct), 
   treeThresh(treeThreshold), stoch(stoch), 
@@ -39,7 +39,7 @@ MultipleClassifiers::MultipleClassifiers(int id, int modelType, int predType,
 }
 
 MultipleClassifiers::MultipleClassifiers(const MultipleClassifiers &t):
-  id(t.id), modelType(t.modelType), predType(t.predType), nModels(t.nModels),
+  id(t.id), modelTypes(t.modelTypes), predType(t.predType), nModels(t.nModels),
   mode(t.mode), freq(t.freq),
   featPct(t.featPct), expPct(t.expPct), 
   treeThresh(t.treeThresh), stoch(t.stoch), addNoise(t.addNoise),
@@ -102,18 +102,18 @@ bool MultipleClassifiers::trainInstances(std::vector<classPair> &instances){
       
       // check accuracy of this model
       if (predType == BEST || predType == WEIGHTAVG){
-	for (unsigned j = 0; j < instances.size(); j++){
-	  updateModelAccuracy(i, instances[j].in, instances[j].out);
-	}
+		for (unsigned j = 0; j < instances.size(); j++){
+		  updateModelAccuracy(i, instances[j].in, instances[j].out);
+		}
       }
 
       // create new vector with some random subset of experiences
       if (rng.uniform() < expPct){
-	float origOutput = instances[j].out;
-	if (addNoise) instances[j].out += rng.uniform(-0.2,0.2)*treeThresh;
-        subsets[i].push_back(instances[j]);
-	if (addNoise) instances[j].out = origOutput;
-	didUpdate = true;
+		float origOutput = instances[j].out;
+		if (addNoise) instances[j].out += rng.uniform(-0.2,0.2)*treeThresh;
+		subsets[i].push_back(instances[j]);
+		if (addNoise) instances[j].out = origOutput;
+		didUpdate = true;
       }
     } // model loop
     
@@ -305,6 +305,8 @@ float MultipleClassifiers::getConf(const std::vector<float> &input){
 
   float conf = 0;
 
+  int modelType = modelTypes[modelId];
+
   // for deterministic trees, calculating a distribution of outcomes
   // calculate kl divergence
   if (modelType == RMAX || modelType == SLF || modelType == C45TREE ||
@@ -411,6 +413,7 @@ void MultipleClassifiers::initModels(){
 
   // init the trees or stumps
   for (int i = 0; i < nModels; i++){
+	int modelType = modelTypes[i];
 
     if (modelType == C45TREE){
       models[i] = new C45Tree(id + i*(1+nModels), mode, freq, 0, featPct, rng);

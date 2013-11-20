@@ -64,7 +64,7 @@ private:
   std::vector<float> s;
 
   // object[i] represent the location of object at line i
-  int* object;
+  int* objPos;
   // direction[i[ is the direction of movement of the ghost at row i
   direct_t* direction;
   // object category for row i

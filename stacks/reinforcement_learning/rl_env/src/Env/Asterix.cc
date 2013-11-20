@@ -18,7 +18,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 	rng(rand),
 	prints(p)
 {
-	object = new int[height];
+	objPos = new int[height];
 	direction = new direct_t[height];
 	objCate = new object_t[height];
 
@@ -26,7 +26,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 }
 
 Asterix::~Asterix() {
-	delete[] object;
+	delete[] objPos;
 	delete[] direction;
 }
 
@@ -59,23 +59,23 @@ float Asterix::apply(int action) {
 	// advance of ghosts
 	for (int i = 0; i < height; i++) {
 		if (direction[i] == LEFT) {
-			if (object[i] == 0) {
+			if (objPos[i] == 0) {
 				// make a turn
-				object[i] = 1;
+				objPos[i] = 1;
 				direction[i] = RIGHT;
 			}
 			else {
-				object[i]--;
+				objPos[i]--;
 			}
 		}
 		else {
-			if (object[i] == width - 1) {
+			if (objPos[i] == width - 1) {
 				// make a turn
-				object[i] = width - 2;
+				objPos[i] = width - 2;
 				direction[i] = LEFT;
 			}
 			else {
-				object[i]++;
+				objPos[i]++;
 			}
 		}
 	}
@@ -96,7 +96,7 @@ float Asterix::apply(int action) {
 }
 
 void Asterix::setPhase() {
-	if (object[0] == 0)
+	if (objPos[0] == 0)
 		for (int i = 0; i < height; i++) objCate[i] = GHOST;
 }
 
@@ -105,22 +105,33 @@ void Asterix::resetPhase() {
 }
 
 void Asterix::updateFeatures() {
-	s[0] = object[ns] - ew;
+	// general
+	/*
+	for (int i = 0; i < height; i++) {
+		s[i] = objPos[i];
+	}
 
-	if (ns > 0) s[1] = object[ns - 1] - ew;
-	else s[1] = object[ns] - ew; // if no previous row, use the position in this row
+	s[height] = ns;
+	s[height + 1] = ew;
+	*/
 
-	if (ns < height - 1) s[2] = object[ns + 1] - ew;
-	else s[2] = object[ns] - ew; // if no following row, use the position in this row
+	// domain specific
+	s[0] = objPos[ns] - ew;
+
+	if (ns > 0) s[1] = objPos[ns - 1] - ew;
+	else s[1] = objPos[ns] - ew; // if no previous row, use the position in this row
+
+	if (ns < height - 1) s[2] = objPos[ns + 1] - ew;
+	else s[2] = objPos[ns] - ew; // if no following row, use the position in this row
 }
 
 bool Asterix::killed() const {
-	return object[ns] == ew && objCate[ns] == GHOST;
+	return objPos[ns] == ew && objCate[ns] == GHOST;
 }
 
 bool Asterix::bonus() {
-	if (object[ns] == ew && objCate[ns] == FOOD) {
-		object[ns] = NOTHING;
+	if (objPos[ns] == ew && objCate[ns] == FOOD) {
+		objPos[ns] = NOTHING;
 		foodPicked++;
 		return true;
 	}
@@ -141,11 +152,11 @@ void Asterix::reset() {
 		if (i % 2 == 0) {
 			// place the ghost at the left-most side
 			direction[i] = RIGHT;
-			object[i] = 0;
+			objPos[i] = 0;
 		}
 		else {
 			direction[i] = LEFT;
-			object[i] = width - 1;
+			objPos[i] = width - 1;
 		}
 	}
 
@@ -171,9 +182,9 @@ void Asterix::getMinMaxReward(float* minR, float* maxR) {
 void Asterix::print() {
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			if (object[i] == j && objCate[i] == GHOST)
+			if (objPos[i] == j && objCate[i] == GHOST)
 				std::cout << "X";
-			else if (object[i] == j && objCate[i] == FOOD)
+			else if (objPos[i] == j && objCate[i] == FOOD)
 				std::cout << "O";
 			else if (ns == i && ew == j)
 				std::cout << "A";

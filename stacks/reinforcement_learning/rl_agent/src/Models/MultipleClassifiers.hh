@@ -36,7 +36,7 @@ public:
       \param stoch if the domain is stochastic or deterministic
       \param rng Random Number Generator 
   */
-  MultipleClassifiers(int id, int modelType, int predType, int nModels, 
+  MultipleClassifiers(int id, std::vector<int> modelTypes, int predType, int nModels,
                       int trainMode, int trainFreq,
                       float featPct, float expPct, float treeThreshold,
                       bool stoch, float featRange, Random rng);
@@ -76,7 +76,7 @@ public:
 private:
 
   const int id;
-  const int modelType;
+  const std::vector<int>& modelTypes;
   const int predType;
   const int nModels;
   const int mode;
