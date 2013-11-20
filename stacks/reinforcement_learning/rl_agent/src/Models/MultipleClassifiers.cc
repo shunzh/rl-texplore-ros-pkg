@@ -16,8 +16,7 @@ MultipleClassifiers::MultipleClassifiers(int id, std::vector<int> modelTypes, in
   id(id), modelTypes(modelTypes), predType(predType), nModels(nModels),
   mode(trainMode), freq(trainFreq),
   featPct(featPct), expPct(expPct), 
-  treeThresh(treeThreshold), stoch(stoch), 
-  addNoise(!stoch && (modelType == M5MULTI || modelType == M5SINGLE || modelType == M5ALLMULTI || modelType == M5ALLSINGLE || modelType == LSTMULTI || modelType == LSTSINGLE)),
+  treeThresh(treeThreshold), stoch(stoch),
   featRange(featRange),
   rng(rng)
 {
@@ -28,7 +27,7 @@ MultipleClassifiers::MultipleClassifiers(int id, std::vector<int> modelTypes, in
   COPYDEBUG = false;
   nsteps = 0;
   
-  cout << "Created MultClass " << id << " with nModels: " << nModels << ", addNoise: " << addNoise << endl;
+  cout << "Created MultClass " << id << " with nModels: " << nModels << endl;
 
   for (int i = -1; i < id; i++)
     rng.uniform(0,1);
@@ -42,7 +41,7 @@ MultipleClassifiers::MultipleClassifiers(const MultipleClassifiers &t):
   id(t.id), modelTypes(t.modelTypes), predType(t.predType), nModels(t.nModels),
   mode(t.mode), freq(t.freq),
   featPct(t.featPct), expPct(t.expPct), 
-  treeThresh(t.treeThresh), stoch(t.stoch), addNoise(t.addNoise),
+  treeThresh(t.treeThresh), stoch(t.stoch),
   featRange(t.featRange), rng(t.rng)
 {
   COPYDEBUG = t.COPYDEBUG;
@@ -68,10 +67,14 @@ MultipleClassifiers::MultipleClassifiers(const MultipleClassifiers &t):
 }
 
 MultipleClassifiers* MultipleClassifiers::getCopy(){
-  
   MultipleClassifiers* copy = new MultipleClassifiers(*this);
   return copy;
 
+}
+
+bool MultipleClassifiers::getAddNoise(int modelId) {
+	int modelType = modelTypes[modelId];
+	return (!stoch && (modelType == M5MULTI || modelType == M5SINGLE || modelType == M5ALLMULTI || modelType == M5ALLSINGLE || modelType == LSTMULTI || modelType == LSTSINGLE));
 }
 
 MultipleClassifiers::~MultipleClassifiers() {
@@ -99,6 +102,7 @@ bool MultipleClassifiers::trainInstances(std::vector<classPair> &instances){
     
     // train each model
     for (int i = 0; i < nModels; i++){
+      bool addNoise = getAddNoise(i);
       
       // check accuracy of this model
       if (predType == BEST || predType == WEIGHTAVG){
@@ -120,6 +124,7 @@ bool MultipleClassifiers::trainInstances(std::vector<classPair> &instances){
     // make sure someone got this instance
     if (!didUpdate){
       int model = rng.uniformDiscrete(0,nModels-1);
+      bool addNoise = getAddNoise(model);
       //cout << "none got instance, update model " << model << endl;
       if (addNoise) instances[j].out += rng.uniform(-0.2,0.2)*treeThresh;
       subsets[model].push_back(instances[j]);
@@ -150,6 +155,7 @@ bool MultipleClassifiers::trainInstance(classPair &instance){
   // train each model
   bool didUpdate = false;
   for (int i = 0; i < nModels; i++){
+	bool addNoise = getAddNoise(i);
 
     // check accuracy of this model
     if (predType == BEST || predType == WEIGHTAVG){
@@ -170,6 +176,7 @@ bool MultipleClassifiers::trainInstance(classPair &instance){
   // make sure some model got the transition
   if (!didUpdate){
     int model = rng.uniformDiscrete(0,nModels-1);
+    bool addNoise = getAddNoise(model);
     if (addNoise) instance.out += rng.uniform(-0.2,0.2)*treeThresh;
     bool singleChange = models[model]->trainInstance(instance);
     changed = singleChange || changed;
@@ -288,6 +295,7 @@ void MultipleClassifiers::testInstance(const std::vector<float> &input, std::map
 
 
 float MultipleClassifiers::getConf(const std::vector<float> &input){
+  /*
   if (STDEBUG || CONF_DEBUG) cout << id << " getConf" << endl;
 
   if ((int)infos.size() != nModels){
@@ -324,7 +332,9 @@ float MultipleClassifiers::getConf(const std::vector<float> &input){
   if (CONF_DEBUG) cout << "return conf: " << conf << endl;
 
   return conf;
-
+  */
+  std::cerr << "MultipleClassifiers::getConf: Don't call me! Call the corresponding model.";
+  return 0;
 }
 
 // calculate kl divergence of these predictions

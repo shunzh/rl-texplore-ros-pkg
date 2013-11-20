@@ -106,8 +106,11 @@ void SepPlanExplore::initModels(){
     exit(-1);
   }
 
+  std::vector<int> modelTypes(nModels);
+  for (int i = 0; i < nModels; i++) modelTypes.push_back(modelType);
+
   // explore model should be of type MultipleClassifiers
-  expModel = new MultipleClassifiers(id, modelType, predType,
+  expModel = new MultipleClassifiers(id, modelTypes, predType,
                                      nModels, mode, freq,
                                      featPct, expPct, treeThresh, stoch, featRange, rng);
 

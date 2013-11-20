@@ -85,9 +85,10 @@ private:
   float expPct;
   const float treeThresh;
   const bool stoch;
-  const bool addNoise;
   const float featRange;
   
+  bool getAddNoise(int);
+
   Random rng;
 
   std::vector<float> accuracy;
