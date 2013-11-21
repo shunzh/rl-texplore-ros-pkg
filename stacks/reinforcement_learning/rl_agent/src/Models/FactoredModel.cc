@@ -146,40 +146,45 @@ bool FactoredModel::initMDPModel(int nfactors){
                                         nModels, treeBuildType, 5,
                                         FEAT_PCT, // remove this pct of feats
                                          EXP_PCT, treeThresh *rRange, stoch, rRange, rng);
-	if (episodic){
-	  terminalModel = new SepPlanExplore((id * (nfactors+1)) +1+ nfactors,
-                                       modelType, predType,
-                                       nModels, treeBuildType, 5,
-                                       FEAT_PCT, // remove this pct of feats
-                                       EXP_PCT, treeThresh, stoch, 1.0, rng);
-	}
+		if (episodic){
+		  terminalModel = new SepPlanExplore((id * (nfactors+1)) +1+ nfactors,
+										   modelType, predType,
+										   nModels, treeBuildType, 5,
+										   FEAT_PCT, // remove this pct of feats
+										   EXP_PCT, treeThresh, stoch, 1.0, rng);
+		}
       }
     }
     else if (nModels > 1 || modelType == ALLM5TYPES){
+      int modelTypesArray[5] = {C45TREE, C45TREE, C45TREE, C45TREE, C45TREE};
+      std::vector<int> modelTypes(modelTypesArray, modelTypesArray + 5);
+
       outputModels[i] = new MultipleClassifiers((id * (nfactors+1)) + i,
-                                               modelType, predType,
+                                               modelTypes, predType,
                                                nModels, treeBuildType, 5,
                                                FEAT_PCT,
                                                EXP_PCT,
                                                 treeThresh *featRange[i], stoch, featRange[i], rng);
+
       if (i == 0){
-        rewardModel = new MultipleClassifiers((id * (nfactors+1)) + nfactors,
-                                             modelType, predType,
+    	  rewardModel = new MultipleClassifiers((id * (nfactors+1)) + nfactors,
+                                             modelTypes, predType,
                                              nModels, treeBuildType, 5,
                                              FEAT_PCT, // remove this pct of feats
                                               EXP_PCT, treeThresh *rRange, stoch, rRange, rng);
-	if (episodic){
-	  terminalModel = new MultipleClassifiers((id * (nfactors+1)) +1+ nfactors,
-                                            modelType, predType,
-                                            nModels, treeBuildType, 5,
-                                            FEAT_PCT, // remove this pct of feats
-                                            EXP_PCT, treeThresh, stoch, 1.0, rng);
-	}
-      }
-    } else {
-      cout << "Invalid model type for MDP TREE" << endl;
-      exit(-1);
-    }
+		  if (episodic){
+			terminalModel = new MultipleClassifiers((id * (nfactors+1)) +1+ nfactors,
+												modelTypes, predType,
+												nModels, treeBuildType, 5,
+												FEAT_PCT, // remove this pct of feats
+												EXP_PCT, treeThresh, stoch, 1.0, rng);
+		  }
+     }
+   }
+   else {
+     cout << "Invalid model type for MDP TREE" << endl;
+     exit(-1);
+   }
 
   }
 

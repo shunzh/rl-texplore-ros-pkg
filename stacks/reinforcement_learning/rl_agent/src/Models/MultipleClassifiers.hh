@@ -76,7 +76,7 @@ public:
 private:
 
   const int id;
-  const std::vector<int>& modelTypes;
+  const std::vector<int> modelTypes;
   const int predType;
   const int nModels;
   const int mode;
