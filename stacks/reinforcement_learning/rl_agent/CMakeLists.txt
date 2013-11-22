@@ -82,4 +82,8 @@ rosbuild_add_executable(agent
   src/agent.cpp
 )
 
+# include opencv
+find_package(OpenCV REQUIRED)
+target_link_libraries(agent ${OpenCV_LIBS})
+
 target_link_libraries(agent agentlib)
