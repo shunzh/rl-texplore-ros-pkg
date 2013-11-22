@@ -11,14 +11,15 @@
 #define SUPPORTVM_H_
 
 #include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.h>
+#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/ml/ml.hpp>
 
-#include "core.hh"
+#include <rl_common/core.hh>
 
 class SupportVM: public Classifier {
 public:
-	SupportVM();
+	SupportVM(int id, int trainMode, int trainFreq, int m,
+			  float featPct, Random rng);
 	virtual ~SupportVM();
 
 	virtual bool trainInstance(classPair &instance);
@@ -26,6 +27,19 @@ public:
 	virtual void testInstance(const std::vector<float> &input, std::map<float, float>* retval);
 	virtual float getConf(const std::vector<float> &input);
 	virtual SupportVM* getCopy();
+
+private:
+	const int id;
+
+	const int mode;
+	const int freq;
+	const int M;
+	const float featPct;
+	const Random rng;
+
+	// SVM
+	CvSVMParams params;
+	CvSVM SVM;
 };
 
 #endif /* SUPPORTVM_H_ */

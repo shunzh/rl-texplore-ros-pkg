@@ -157,7 +157,7 @@ bool FactoredModel::initMDPModel(int nfactors){
     }
     else if (nModels > 1 || modelType == ALLM5TYPES){
       // FIXME expect passing as parameters
-      int modelTypesArray[] = {C45TREE, C45TREE, C45TREE, C45TREE, ANN};
+      int modelTypesArray[] = {C45TREE, C45TREE, C45TREE, C45TREE, SVMMODEL};
       std::vector<int> modelTypes(modelTypesArray, modelTypesArray + nModels);
 
       outputModels[i] = new MultipleClassifiers((id * (nfactors+1)) + i,

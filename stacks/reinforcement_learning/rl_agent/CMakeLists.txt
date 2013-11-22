@@ -29,6 +29,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
+# include opencv
+find_package(OpenCV REQUIRED)
+
 rosbuild_add_library(agentlib
   src/Agent/DiscretizationAgent.cc 
   src/Agent/QLearner.cc
@@ -45,6 +48,8 @@ rosbuild_add_library(agentlib
   src/Models/ExplorationModel.cc
   src/Models/RMaxModel.cc 
   src/Models/SepPlanExplore.cc 
+  src/Models/SupportVM.cc 
+  src/Models/MultipleLP.cc 
   src/Planners/ValueIteration.cc
   src/Planners/PolicyIteration.cc
   src/Planners/PrioritizedSweeping.cc 
@@ -77,13 +82,10 @@ rosbuild_add_library(agentlib
   src/newmat/newmat9.cc
 )
 
+target_link_libraries(agentlib ${OpenCV_LIBS})
 
 rosbuild_add_executable(agent
   src/agent.cpp
 )
-
-# include opencv
-find_package(OpenCV REQUIRED)
-target_link_libraries(agent ${OpenCV_LIBS})
 
 target_link_libraries(agent agentlib)

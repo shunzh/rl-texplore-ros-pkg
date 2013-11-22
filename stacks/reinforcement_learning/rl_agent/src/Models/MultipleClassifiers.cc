@@ -456,10 +456,10 @@ void MultipleClassifiers::initModels(){
       models[i] = new M5Tree(id + i*(1+nModels), mode, freq, 0, featPct, simple, allFeats, treeThresh, rng);
     }
     else if (modelType == SVMMODEL) {
-      models[i] = new SupportVM();
+      models[i] = new SupportVM(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
     else if (modelType == ANN) {
-      models[i] = new MultipleLP();
+      models[i] = new MultipleLP(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
     else {
       cout << "Invalid model type for this committee " << modelType << endl;

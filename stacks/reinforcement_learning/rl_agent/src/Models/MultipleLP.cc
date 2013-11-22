@@ -5,10 +5,12 @@
  *      Author: menie
  */
 
-#include "MultipleLP.h"
+#include "MultipleLP.hh"
 
-MultipleLP::MultipleLP() {
-	// TODO Auto-generated constructor stub
+MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
+        float featPct, Random rng):
+	id(id), mode(trainMode), freq(trainFreq), M(m),
+	featPct(featPct), rng(rng) {
 
 }
 
