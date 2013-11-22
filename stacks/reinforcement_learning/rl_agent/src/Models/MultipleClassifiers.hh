@@ -9,11 +9,10 @@
 #include "../Models/C45Tree.hh"
 #include "../Models/M5Tree.hh"
 #include "../Models/LinearSplitsTree.hh"
+#include "../Models/SupportVM.hh"
+#include "../Models/MultipleLP.hh"
 
 #include "../Models/Stump.hh"
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/ml/ml.hpp>
 
 #include <rl_common/Random.h>
 #include <rl_common/core.hh>

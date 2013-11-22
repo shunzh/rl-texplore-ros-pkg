@@ -455,6 +455,12 @@ void MultipleClassifiers::initModels(){
       //cout << "ALL types init tree " << i << " with simple: " << simple << " and allFeats: " << allFeats << endl;
       models[i] = new M5Tree(id + i*(1+nModels), mode, freq, 0, featPct, simple, allFeats, treeThresh, rng);
     }
+    else if (modelType == SVMMODEL) {
+      models[i] = new SupportVM();
+    }
+    else if (modelType == ANN) {
+      models[i] = new MultipleLP();
+    }
     else {
       cout << "Invalid model type for this committee " << modelType << endl;
       exit(-1);
