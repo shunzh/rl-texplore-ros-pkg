@@ -6,7 +6,6 @@
 #include "MultipleClassifiers.hh"
 
 
-
 MultipleClassifiers::MultipleClassifiers(int id, std::vector<int> modelTypes, int predType,
                                          int nModels, int trainMode,
                                          int trainFreq,

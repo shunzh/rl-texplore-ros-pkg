@@ -12,6 +12,9 @@
 
 #include "../Models/Stump.hh"
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/ml/ml.hpp>
+
 #include <rl_common/Random.h>
 #include <rl_common/core.hh>
 #include <vector>

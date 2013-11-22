@@ -20,7 +20,8 @@
 #define SLF         1
 #define C45TREE     2
 #define SINGLETREE  3
-#define SVM         4
+// FIXME this line harms cv.ml!!
+//#define SVM         4
 #define STUMP       5
 #define M5MULTI     6
 #define M5SINGLE    7
