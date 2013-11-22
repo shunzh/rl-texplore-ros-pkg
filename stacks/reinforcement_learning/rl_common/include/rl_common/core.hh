@@ -31,6 +31,7 @@
 #define ALLM5TYPES  12
 #define GPREGRESS   13
 #define GPTREE      14
+#define ANN	         15 // ADDED
 
 const std::string modelNames[] = {
   "Tabular",

@@ -1,4 +1,6 @@
-Enable multiple model learning.
+Enable multiple model learning. OK.
+- Defined set of models in factored model.
+Add ANN and SVM.
 
 Test each model separately.
 

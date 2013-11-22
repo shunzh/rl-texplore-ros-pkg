@@ -457,7 +457,7 @@ void MultipleClassifiers::initModels(){
       models[i] = new M5Tree(id + i*(1+nModels), mode, freq, 0, featPct, simple, allFeats, treeThresh, rng);
     }
     else {
-      cout << "Invalid model type for this committee" << endl;
+      cout << "Invalid model type for this committee " << modelType << endl;
       exit(-1);
     }
   }
