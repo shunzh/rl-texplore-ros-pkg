@@ -7,13 +7,12 @@
 
 #include "SupportVM.hh"
 
+using namespace cv;
+
 SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),
 	featPct(featPct), rng(rng) {
-
-	params.svm_type    = CvSVM::C_SVC;
-    params.kernel_type = CvSVM::LINEAR;
 }
 
 SupportVM::~SupportVM() {
@@ -29,6 +28,7 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	float* labels;
 
 	trainingData = new float*[instances.size()];
+
 	labels = new float[instances.size()];
 
 	for(std::vector<classPair>::iterator it = instances.begin(); it != instances.end(); ++it) {
@@ -36,6 +36,13 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 		trainingData[index] = &(*it).in[0];
 		labels[index] = (*it).out;
 	}
+
+	Mat trainingMat(instances.size(), instances[0].in.size(), CV_32FC1, trainingData);
+	Mat labelMat(instances.size(), 1, CV_32FC1, labels);
+
+	SVM.train(trainingMat, labelMat);
+
+	return true;
 }
 
 void SupportVM::testInstance(const std::vector<float>& input,

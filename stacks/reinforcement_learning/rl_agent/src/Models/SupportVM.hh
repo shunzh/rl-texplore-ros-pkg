@@ -38,7 +38,6 @@ private:
 	const Random rng;
 
 	// SVM
-	CvSVMParams params;
 	CvSVM SVM;
 };
 
