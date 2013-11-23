@@ -25,26 +25,31 @@ bool SupportVM::trainInstance(classPair& instance) {
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
-	float** trainingData;
+	if (instances.size() < 2) {
+		// nothing to train
+		return true;
+	}
+
+	float* trainingData; // unrolled 2 dimensional array
 	float* labels;
 	int featureSize = instances[0].in.size();
 
-	trainingData = new float*[instances.size()];
+	trainingData = new float[instances.size() * featureSize];
 
 	labels = new float[instances.size()];
 
 	for(std::vector<classPair>::iterator it = instances.begin(); it != instances.end(); ++it) {
 		int index = it - instances.begin();
 
-		trainingData[index] = new float[featureSize];
-
-		std::copy((*it).in.begin(), (*it).in.begin() + featureSize, trainingData[index]);
+		std::copy((*it).in.begin(), (*it).in.begin() + featureSize, trainingData + index * featureSize);
 
 		labels[index] = (*it).out;
 	}
 
 	Mat trainingMat(instances.size(), featureSize, CV_32FC1, trainingData);
 	Mat labelMat(instances.size(), 1, CV_32FC1, labels);
+
+	std::cout << trainingMat << std::endl << labelMat << std::endl;
 
 	SVM.train(trainingMat, labelMat);
 
