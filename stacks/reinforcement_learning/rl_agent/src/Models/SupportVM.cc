@@ -20,7 +20,8 @@ SupportVM::~SupportVM() {
 }
 
 bool SupportVM::trainInstance(classPair& instance) {
-
+	std::cerr << "SupportVM: trainInstance called." << std::endl;
+	return false;
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
@@ -47,10 +48,18 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 void SupportVM::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
+	float* testData = &input[0];
+
+	float predit = SVM.predict(testData, false);
+
+	retval[predit] = 1;
 }
 
 float SupportVM::getConf(const std::vector<float>& input) {
+	// FIXME trivial
+	return 1;
 }
 
 SupportVM* SupportVM::getCopy() {
+	return SupportVM(*this);
 }
