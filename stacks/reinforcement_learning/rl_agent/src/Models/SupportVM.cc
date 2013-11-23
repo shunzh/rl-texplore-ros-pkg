@@ -27,6 +27,7 @@ bool SupportVM::trainInstance(classPair& instance) {
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	float** trainingData;
 	float* labels;
+	int featureSize = instances[0].in.size();
 
 	trainingData = new float*[instances.size()];
 
@@ -34,11 +35,15 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 	for(std::vector<classPair>::iterator it = instances.begin(); it != instances.end(); ++it) {
 		int index = it - instances.begin();
-		trainingData[index] = &(*it).in[0];
+
+		trainingData[index] = new float[featureSize];
+
+		std::copy((*it).in.begin(), (*it).in.begin() + featureSize, trainingData[index]);
+
 		labels[index] = (*it).out;
 	}
 
-	Mat trainingMat(instances.size(), instances[0].in.size(), CV_32FC1, trainingData);
+	Mat trainingMat(instances.size(), featureSize, CV_32FC1, trainingData);
 	Mat labelMat(instances.size(), 1, CV_32FC1, labels);
 
 	SVM.train(trainingMat, labelMat);
@@ -48,11 +53,14 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 void SupportVM::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
-	float* testData = &input[0];
+	float* testData = new float[input.size()];
+	std::copy(input.begin(), input.begin() + input.size(), testData);
 
-	float predit = SVM.predict(testData, false);
+	Mat testMat(input.size(), 1, CV_32FC1, testData);
 
-	retval[predit] = 1;
+	float predit = SVM.predict(testMat, false);
+
+	(*retval)[predit] = 1.0;
 }
 
 float SupportVM::getConf(const std::vector<float>& input) {
@@ -61,5 +69,6 @@ float SupportVM::getConf(const std::vector<float>& input) {
 }
 
 SupportVM* SupportVM::getCopy() {
-	return SupportVM(*this);
+	SupportVM* svm = new SupportVM(*this);
+	return svm;
 }
