@@ -38,8 +38,8 @@ void OpencvClassifier::updateMats(std::vector<classPair>& instances) {
 	labelMat.push_back(labelInc);
 
 	if (CVDEBUG) {
-		std::cout << "Train instances for " << std::endl;
-		std::cout << trainingMat << std::endl << labelMat << std::endl;
+		std::cout << "Training: " << std::endl << trainingMat << std::endl;
+		std::cout << "Labels: " << std::endl << labelMat << std::endl;
 	}
 
 	delete[] trainingData;
@@ -49,8 +49,11 @@ void OpencvClassifier::updateMats(std::vector<classPair>& instances) {
 Mat OpencvClassifier::getTestingMat(const std::vector<float>& input) {
 	float* testData = new float[input.size()];
 	std::copy(input.begin(), input.begin() + input.size(), testData);
-
 	Mat testMat(1, input.size(), CV_32FC1, testData);
+
+	if (CVDEBUG) {
+		std::cout << "Test:" << std::endl << testMat << std::endl;
+	}
 
 	delete[] testData;
 

@@ -35,6 +35,7 @@ private:
 	const Random rng;
 
 	CvANN_MLP mlp ;
+	pthread_mutex_t mlp_mutex;
 };
 
 #endif /* MULTIPLELP_H_ */

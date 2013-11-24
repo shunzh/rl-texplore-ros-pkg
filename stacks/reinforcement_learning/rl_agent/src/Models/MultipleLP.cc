@@ -22,7 +22,6 @@ MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
 	layers.row(3) = Scalar (1);
 
 	mlp.create(layers);
-
 }
 
 MultipleLP::~MultipleLP() {
@@ -35,20 +34,27 @@ bool MultipleLP::trainInstance(classPair& instance) {
 }
 
 bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
+	pthread_mutex_lock(&mlp_mutex);
 	updateMats(instances);
 
 	mlp.train(trainingMat, labelMat, Mat());
+	pthread_mutex_unlock(&mlp_mutex);
 
 	return true;
 }
 
 void MultipleLP::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
+	retval->clear();
+
+	pthread_mutex_lock(&mlp_mutex);
 	Mat testMat = getTestingMat(input);
 	float* output = new float();
 	Mat responseMat(1, 1, CV_32FC1, output);
 
 	mlp.predict(testMat, responseMat);
+	pthread_mutex_unlock(&mlp_mutex);
+
 	float result = responseMat.at<float>(0 ,0);
 
 	(*retval)[result] = 1;
