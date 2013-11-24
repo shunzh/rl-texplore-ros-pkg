@@ -37,8 +37,17 @@ private:
 	const float featPct;
 	const Random rng;
 
+	// DEBUG
+	const bool SVMDEBUG;
+
 	// SVM
-	CvSVM SVM;
+	CvSVM SVM, oldSVM;
+	cv::Mat trainingMat, labelMat;
+
+	pthread_mutex_t svm_mutex;
+
+	// return true of labelMat contains only one type of class
+	bool homogeneous();
 };
 
 #endif /* SUPPORTVM_H_ */

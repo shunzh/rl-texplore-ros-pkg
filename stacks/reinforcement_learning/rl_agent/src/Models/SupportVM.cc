@@ -12,7 +12,9 @@ using namespace cv;
 SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),
-	featPct(featPct), rng(rng) {
+	featPct(featPct), rng(rng), SVMDEBUG(true) {
+
+	pthread_mutex_init(&svm_mutex, NULL);
 }
 
 SupportVM::~SupportVM() {
@@ -25,11 +27,6 @@ bool SupportVM::trainInstance(classPair& instance) {
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
-	if (instances.size() < 2) {
-		// nothing to train
-		return true;
-	}
-
 	float* trainingData; // unrolled 2 dimensional array
 	float* labels;
 	int featureSize = instances[0].in.size();
@@ -46,12 +43,26 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 		labels[index] = (*it).out;
 	}
 
-	Mat trainingMat(instances.size(), featureSize, CV_32FC1, trainingData);
-	Mat labelMat(instances.size(), 1, CV_32FC1, labels);
+	Mat trainingInc(instances.size(), featureSize, CV_32FC1, trainingData);
+	Mat labelInc(instances.size(), 1, CV_32FC1, labels);
 
-	std::cout << trainingMat << std::endl << labelMat << std::endl;
+	trainingMat.push_back(trainingInc);
+	labelMat.push_back(labelInc);
 
-	SVM.train(trainingMat, labelMat);
+	if (SVMDEBUG) {
+		std::cout << "Train instances for " << this->id << std::endl;
+		std::cout << trainingMat << std::endl << labelMat << std::endl;
+	}
+
+	// we cannot train it if we have less than 2 samples
+	pthread_mutex_lock(&svm_mutex);
+	if (! homogeneous()) {
+		SVM.train(trainingMat, labelMat);
+	}
+	pthread_mutex_unlock(&svm_mutex);
+
+	delete[] trainingData;
+	delete[] labels;
 
 	return true;
 }
@@ -61,11 +72,25 @@ void SupportVM::testInstance(const std::vector<float>& input,
 	float* testData = new float[input.size()];
 	std::copy(input.begin(), input.begin() + input.size(), testData);
 
-	Mat testMat(input.size(), 1, CV_32FC1, testData);
+	Mat testMat(1, input.size(), CV_32FC1, testData);
 
-	float predit = SVM.predict(testMat, false);
+	pthread_mutex_lock(&svm_mutex);
+	// it doesn't work if it has only seen 1 or less samples
+	if (homogeneous()) {
+		pthread_mutex_unlock(&svm_mutex);
+		return;
+	}
+
+	float predit = SVM.predict(testMat);
+	pthread_mutex_unlock(&svm_mutex);
+
+	if (SVMDEBUG) {
+		std::cout << "Predict: " << predit << std::endl;
+	}
 
 	(*retval)[predit] = 1.0;
+
+	delete[] testData;
 }
 
 float SupportVM::getConf(const std::vector<float>& input) {
@@ -76,4 +101,17 @@ float SupportVM::getConf(const std::vector<float>& input) {
 SupportVM* SupportVM::getCopy() {
 	SupportVM* svm = new SupportVM(*this);
 	return svm;
+}
+
+bool SupportVM::homogeneous() {
+	if (labelMat.rows < 10) return true;
+
+	float firstLabel = labelMat.at<float>(0, 0);
+	for (int i = 1; i < labelMat.rows; i++) {
+		if (labelMat.at<float>(i, 0) != firstLabel) {
+			return false;
+		}
+	}
+
+	return true;
 }
