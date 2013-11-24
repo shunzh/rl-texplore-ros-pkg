@@ -14,8 +14,9 @@ MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
 	id(id), mode(trainMode), freq(trainFreq), M(m),
 	featPct(featPct), rng(rng) {
 
+	// FIXME first layer depends on data
 	Mat layers = Mat(4, 1, CV_32SC1) ;
-	layers.row(0) = Scalar (2);
+	layers.row(0) = Scalar (8);
 	layers.row(1) = Scalar (10);
 	layers.row(2) = Scalar (15);
 	layers.row(3) = Scalar (1);
@@ -70,15 +71,18 @@ bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
 void MultipleLP::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
 	float* testData = new float[input.size()];
+	float* output = new float();
 	std::copy(input.begin(), input.begin() + input.size(), testData);
 
 	Mat testMat(1, input.size(), CV_32FC1, testData);
-	Mat responseMat(1, 1, CV_32FC1);
+	Mat responseMat(1, 1, CV_32FC1, output);
 
 	mlp.predict(testMat, responseMat);
 	float result = responseMat.at<float>(0 ,0);
 
 	(*retval)[result] = 1;
+
+	delete[] testData;
 }
 
 float MultipleLP::getConf(const std::vector<float>& input) {
