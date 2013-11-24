@@ -26,35 +26,7 @@ bool SupportVM::trainInstance(classPair& instance) {
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
-	float* trainingData; // unrolled 2 dimensional array
-	float* labels;
-	int featureSize = instances[0].in.size();
-
-	// FIXME weird problem
-	if (featureSize < 0 || featureSize > 100) return false;
-
-	trainingData = new float[instances.size() * featureSize];
-
-	labels = new float[instances.size()];
-
-	for(std::vector<classPair>::iterator it = instances.begin(); it != instances.end(); ++it) {
-		int index = it - instances.begin();
-
-		std::copy((*it).in.begin(), (*it).in.begin() + featureSize, trainingData + index * featureSize);
-
-		labels[index] = (*it).out;
-	}
-
-	Mat trainingInc(instances.size(), featureSize, CV_32FC1, trainingData);
-	Mat labelInc(instances.size(), 1, CV_32FC1, labels);
-
-	trainingMat.push_back(trainingInc);
-	labelMat.push_back(labelInc);
-
-	if (SVMDEBUG) {
-		std::cout << "Train instances for " << this->id << std::endl;
-		std::cout << trainingMat << std::endl << labelMat << std::endl;
-	}
+	updateMats(instances);
 
 	// we cannot train it if we have less than 2 samples
 	pthread_mutex_lock(&svm_mutex);
@@ -63,18 +35,12 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	}
 	pthread_mutex_unlock(&svm_mutex);
 
-	delete[] trainingData;
-	delete[] labels;
-
 	return true;
 }
 
 void SupportVM::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
-	float* testData = new float[input.size()];
-	std::copy(input.begin(), input.begin() + input.size(), testData);
-
-	Mat testMat(1, input.size(), CV_32FC1, testData);
+	Mat testMat = getTestingMat(input);
 
 	pthread_mutex_lock(&svm_mutex);
 	// it doesn't work if it has only seen 1 or less samples
@@ -82,9 +48,7 @@ void SupportVM::testInstance(const std::vector<float>& input,
 		pthread_mutex_unlock(&svm_mutex);
 		return;
 	}
-
-	// DEBUG
-	float predit = 0; // SVM.predict(testMat);
+	float predit = SVM.predict(testMat);
 	pthread_mutex_unlock(&svm_mutex);
 
 	if (SVMDEBUG) {
@@ -92,8 +56,6 @@ void SupportVM::testInstance(const std::vector<float>& input,
 	}
 
 	(*retval)[predit] = 1.0;
-
-	delete[] testData;
 
 	return;
 }

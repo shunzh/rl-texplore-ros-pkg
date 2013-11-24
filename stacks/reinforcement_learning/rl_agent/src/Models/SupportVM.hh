@@ -10,13 +10,10 @@
 #ifndef SUPPORTVM_H_
 #define SUPPORTVM_H_
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/ml/ml.hpp>
-
 #include <rl_common/core.hh>
+#include "OpencvClassifier.hh"
 
-class SupportVM: public Classifier {
+class SupportVM: public OpencvClassifier {
 public:
 	SupportVM(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
@@ -42,7 +39,6 @@ private:
 
 	// SVM
 	CvSVM SVM;
-	cv::Mat trainingMat, labelMat;
 
 	pthread_mutex_t svm_mutex;
 

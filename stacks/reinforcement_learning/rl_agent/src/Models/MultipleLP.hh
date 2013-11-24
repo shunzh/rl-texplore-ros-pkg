@@ -10,13 +10,10 @@
 #ifndef MULTIPLELP_H_
 #define MULTIPLELP_H_
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/ml/ml.hpp>
-
 #include <rl_common/core.hh>
+#include "OpencvClassifier.hh"
 
-class MultipleLP: public Classifier {
+class MultipleLP: public OpencvClassifier {
 public:
 	MultipleLP(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
@@ -38,7 +35,6 @@ private:
 	const Random rng;
 
 	CvANN_MLP mlp ;
-	cv::Mat trainingMat, labelMat;
 };
 
 #endif /* MULTIPLELP_H_ */

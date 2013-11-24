@@ -48,6 +48,7 @@ rosbuild_add_library(agentlib
   src/Models/ExplorationModel.cc
   src/Models/RMaxModel.cc 
   src/Models/SepPlanExplore.cc 
+  src/Models/OpencvClassifier.cc 
   src/Models/SupportVM.cc 
   src/Models/MultipleLP.cc 
   src/Planners/ValueIteration.cc
