@@ -32,7 +32,6 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 	// FIXME weird problem
 	if (featureSize < 0 || featureSize > 100) return false;
-	cout << "f" << featureSize << endl;
 
 	trainingData = new float[instances.size() * featureSize];
 
@@ -64,8 +63,8 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	}
 	pthread_mutex_unlock(&svm_mutex);
 
-	delete trainingData;
-	delete labels;
+	delete[] trainingData;
+	delete[] labels;
 
 	return true;
 }
@@ -94,7 +93,7 @@ void SupportVM::testInstance(const std::vector<float>& input,
 
 	(*retval)[predit] = 1.0;
 
-	delete testData;
+	delete[] testData;
 
 	return;
 }

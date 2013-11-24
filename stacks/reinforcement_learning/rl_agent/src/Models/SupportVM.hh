@@ -47,6 +47,7 @@ private:
 	pthread_mutex_t svm_mutex;
 
 	// return true of labelMat contains only one type of class
+	// if so, no need for training
 	bool homogeneous();
 };
 

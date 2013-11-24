@@ -4,7 +4,7 @@
  * Multiple Layer Perception (ANN), using OpenCV.
  *
  *  Created on: Nov 22, 2013
- *      Author: Shu Zhang
+ *      Author: Shun Zhang
  */
 
 #ifndef MULTIPLELP_H_
@@ -36,6 +36,9 @@ private:
 	const int M;
 	const float featPct;
 	const Random rng;
+
+	CvANN_MLP mlp ;
+	cv::Mat trainingMat, labelMat;
 };
 
 #endif /* MULTIPLELP_H_ */
