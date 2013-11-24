@@ -12,13 +12,12 @@ using namespace cv;
 SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),
-	featPct(featPct), rng(rng), SVMDEBUG(true) {
+	featPct(featPct), rng(rng), SVMDEBUG(false) {
 
 	pthread_mutex_init(&svm_mutex, NULL);
 }
 
 SupportVM::~SupportVM() {
-
 }
 
 bool SupportVM::trainInstance(classPair& instance) {
@@ -30,6 +29,10 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	float* trainingData; // unrolled 2 dimensional array
 	float* labels;
 	int featureSize = instances[0].in.size();
+
+	// FIXME weird problem
+	if (featureSize < 0 || featureSize > 100) return false;
+	cout << "f" << featureSize << endl;
 
 	trainingData = new float[instances.size() * featureSize];
 
@@ -61,8 +64,8 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 	}
 	pthread_mutex_unlock(&svm_mutex);
 
-	delete[] trainingData;
-	delete[] labels;
+	delete trainingData;
+	delete labels;
 
 	return true;
 }
@@ -81,7 +84,8 @@ void SupportVM::testInstance(const std::vector<float>& input,
 		return;
 	}
 
-	float predit = SVM.predict(testMat);
+	// DEBUG
+	float predit = 0; // SVM.predict(testMat);
 	pthread_mutex_unlock(&svm_mutex);
 
 	if (SVMDEBUG) {
@@ -90,7 +94,9 @@ void SupportVM::testInstance(const std::vector<float>& input,
 
 	(*retval)[predit] = 1.0;
 
-	delete[] testData;
+	delete testData;
+
+	return;
 }
 
 float SupportVM::getConf(const std::vector<float>& input) {

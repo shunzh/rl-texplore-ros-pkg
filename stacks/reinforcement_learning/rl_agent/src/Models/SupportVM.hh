@@ -41,7 +41,7 @@ private:
 	const bool SVMDEBUG;
 
 	// SVM
-	CvSVM SVM, oldSVM;
+	CvSVM SVM;
 	cv::Mat trainingMat, labelMat;
 
 	pthread_mutex_t svm_mutex;

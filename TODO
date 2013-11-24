@@ -1,6 +1,8 @@
 Enable multiple model learning. OK.
 - Defined set of models in factored model.
+
 Add ANN and SVM.
+- Experience is state + action -> reward
 
 Test each model separately.
 
