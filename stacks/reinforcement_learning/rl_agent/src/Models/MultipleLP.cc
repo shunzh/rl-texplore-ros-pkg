@@ -51,12 +51,16 @@ bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
 void MultipleLP::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
 	pthread_mutex_lock(&mlp_mutex);
+
 	retval->clear();
 
 	Mat testMat = getTestingMat(input);
 	float* output = new float();
 	Mat responseMat(1, 1, CV_32FC1, output);
 
+	if (CVDEBUG) {
+		std::cout << "Test:" << std::endl << testMat << std::endl << trainingMat << std::endl << "OK." << std::endl;
+	}
 	mlp.predict(testMat, responseMat);
 
 	float result = responseMat.at<float>(0 ,0);
@@ -66,7 +70,7 @@ void MultipleLP::testInstance(const std::vector<float>& input,
 }
 
 float MultipleLP::getConf(const std::vector<float>& input) {
-	// FIXME trivial
+	// FIXME dummy
 	return 1;
 }
 
