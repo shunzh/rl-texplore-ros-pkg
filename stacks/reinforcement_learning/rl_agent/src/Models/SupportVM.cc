@@ -15,14 +15,20 @@ SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
 	featPct(featPct), rng(rng), SVMDEBUG(true) {
 
 	pthread_mutex_init(&svm_mutex, NULL);
+
+    // Set up SVM's parameters
+    params.svm_type    = CvSVM::C_SVC;
+    params.kernel_type = CvSVM::LINEAR;
+    params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6);
 }
 
 SupportVM::~SupportVM() {
 }
 
 bool SupportVM::trainInstance(classPair& instance) {
-	std::cerr << "SupportVM: trainInstance called." << std::endl;
-	return false;
+	std::vector<classPair> vec;
+	vec.push_back(instance);
+	return trainInstances(vec);
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
@@ -31,7 +37,7 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 	// we cannot train it if we have less than 2 samples
 	if (! homogeneous()) {
-		SVM.train(trainingMat, labelMat);
+		SVM.train(trainingMat, labelMat, Mat(), Mat(), params);
 	}
 	pthread_mutex_unlock(&svm_mutex);
 
@@ -40,9 +46,9 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 void SupportVM::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
+	pthread_mutex_lock(&svm_mutex);
 	retval->clear();
 
-	pthread_mutex_lock(&svm_mutex);
 	Mat testMat = getTestingMat(input);
 
 	// it doesn't work if it has only seen 1 or less samples
@@ -51,15 +57,13 @@ void SupportVM::testInstance(const std::vector<float>& input,
 		return;
 	}
 	float predit = SVM.predict(testMat);
-	pthread_mutex_unlock(&svm_mutex);
 
 	if (SVMDEBUG) {
 		std::cout << "Predict: " << predit << std::endl;
 	}
 
 	(*retval)[predit] = 1.0;
-
-	return;
+	pthread_mutex_unlock(&svm_mutex);
 }
 
 float SupportVM::getConf(const std::vector<float>& input) {

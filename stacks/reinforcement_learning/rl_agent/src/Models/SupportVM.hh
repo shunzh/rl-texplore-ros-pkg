@@ -38,6 +38,7 @@ private:
 	const bool SVMDEBUG;
 
 	// SVM
+	CvSVMParams params;
 	CvSVM SVM;
 
 	pthread_mutex_t svm_mutex;

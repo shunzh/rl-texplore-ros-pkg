@@ -29,8 +29,9 @@ MultipleLP::~MultipleLP() {
 }
 
 bool MultipleLP::trainInstance(classPair& instance) {
-	std::cerr << "MultipleLP: trainInstance called." << std::endl;
-	return false;
+	std::vector<classPair> vec;
+	vec.push_back(instance);
+	return trainInstances(vec);
 }
 
 bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
