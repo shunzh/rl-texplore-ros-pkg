@@ -13,7 +13,7 @@
 #include <rl_common/core.hh>
 #include "OpencvClassifier.hh"
 
-class MultipleLP: public OpencvClassifier {
+class MultipleLP: public Classifier {
 public:
 	MultipleLP(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
@@ -34,7 +34,6 @@ private:
 	const float featPct;
 	const Random rng;
 
-	CvANN_MLP mlp ;
 	pthread_mutex_t mlp_mutex;
 };
 

@@ -13,7 +13,7 @@
 #include <rl_common/core.hh>
 #include "OpencvClassifier.hh"
 
-class SupportVM: public OpencvClassifier {
+class SupportVM: public Classifier {
 public:
 	SupportVM(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
@@ -34,15 +34,7 @@ private:
 	const float featPct;
 	const Random rng;
 
-	// SVM
-	CvSVMParams params;
-	CvSVM SVM;
-
 	pthread_mutex_t svm_mutex;
-
-	// return true of labelMat contains only one type of class
-	// if so, no need for training
-	bool homogeneous();
 };
 
 #endif /* SUPPORTVM_H_ */
