@@ -12,7 +12,7 @@ using namespace cv;
 SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),
-	featPct(featPct), rng(rng), SVMDEBUG(false) {
+	featPct(featPct), rng(rng), SVMDEBUG(true) {
 
 	pthread_mutex_init(&svm_mutex, NULL);
 }
@@ -26,10 +26,10 @@ bool SupportVM::trainInstance(classPair& instance) {
 }
 
 bool SupportVM::trainInstances(std::vector<classPair>& instances) {
+	pthread_mutex_lock(&svm_mutex);
 	updateMats(instances);
 
 	// we cannot train it if we have less than 2 samples
-	pthread_mutex_lock(&svm_mutex);
 	if (! homogeneous()) {
 		SVM.train(trainingMat, labelMat);
 	}
@@ -40,9 +40,11 @@ bool SupportVM::trainInstances(std::vector<classPair>& instances) {
 
 void SupportVM::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
-	Mat testMat = getTestingMat(input);
+	retval->clear();
 
 	pthread_mutex_lock(&svm_mutex);
+	Mat testMat = getTestingMat(input);
+
 	// it doesn't work if it has only seen 1 or less samples
 	if (homogeneous()) {
 		pthread_mutex_unlock(&svm_mutex);
@@ -71,7 +73,7 @@ SupportVM* SupportVM::getCopy() {
 }
 
 bool SupportVM::homogeneous() {
-	if (labelMat.rows < 10) return true;
+	if (labelMat.rows < 2) return true;
 
 	float firstLabel = labelMat.at<float>(0, 0);
 	for (int i = 1; i < labelMat.rows; i++) {

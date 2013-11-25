@@ -35,9 +35,14 @@ bool MultipleLP::trainInstance(classPair& instance) {
 
 bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
 	pthread_mutex_lock(&mlp_mutex);
+
 	updateMats(instances);
 
-	mlp.train(trainingMat, labelMat, Mat());
+	float* weights = new float[trainingMat.rows];
+	for (int i = 0; i < trainingMat.rows; i++) weights[i] = 1;
+	Mat sampleWeights(trainingMat.rows, 1, CV_32FC1, weights);
+
+	mlp.train(trainingMat, labelMat, sampleWeights);
 	pthread_mutex_unlock(&mlp_mutex);
 
 	return true;
@@ -45,19 +50,19 @@ bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
 
 void MultipleLP::testInstance(const std::vector<float>& input,
 		std::map<float, float>* retval) {
+	pthread_mutex_lock(&mlp_mutex);
 	retval->clear();
 
-	pthread_mutex_lock(&mlp_mutex);
 	Mat testMat = getTestingMat(input);
 	float* output = new float();
 	Mat responseMat(1, 1, CV_32FC1, output);
 
 	mlp.predict(testMat, responseMat);
-	pthread_mutex_unlock(&mlp_mutex);
 
 	float result = responseMat.at<float>(0 ,0);
 
 	(*retval)[result] = 1;
+	pthread_mutex_unlock(&mlp_mutex);
 }
 
 float MultipleLP::getConf(const std::vector<float>& input) {
