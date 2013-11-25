@@ -159,7 +159,7 @@ bool FactoredModel::initMDPModel(int nfactors){
       // FIXME expect passing as parameters
       //int modelTypesArray[] = {C45TREE, C45TREE, C45TREE, C45TREE, C45TREE};
       //int modelTypesArray[] = {SVMMODEL, SVMMODEL, SVMMODEL, SVMMODEL, SVMMODEL};
-      int modelTypesArray[] = {ANN, ANN, ANN, ANN, ANN};
+      int modelTypesArray[] = {ANN, C45TREE, C45TREE, C45TREE, C45TREE};
 
       std::vector<int> modelTypes(modelTypesArray, modelTypesArray + nModels);
 

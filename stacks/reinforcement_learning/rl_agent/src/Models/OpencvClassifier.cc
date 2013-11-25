@@ -10,7 +10,7 @@
 using namespace cv;
 
 OpencvClassifier::OpencvClassifier() :
-	CVDEBUG(false) {
+	CVDEBUG(true) {
 
 }
 
@@ -45,7 +45,7 @@ void OpencvClassifier::updateMats(std::vector<classPair>& instances) {
 
 Mat OpencvClassifier::getTestingMat(const std::vector<float>& input) {
 	float* testData = new float[input.size()];
-	std::copy(input.begin(), input.begin() + input.size(), testData);
+	std::copy(input.begin(), input.end(), testData);
 	Mat testMat(1, input.size(), CV_32FC1, testData);
 
 	return testMat;

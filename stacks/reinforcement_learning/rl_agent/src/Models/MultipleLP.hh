@@ -17,7 +17,6 @@ class MultipleLP: public OpencvClassifier {
 public:
 	MultipleLP(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
-	virtual ~MultipleLP();
 
 	virtual bool trainInstance(classPair &instance);
 	virtual bool trainInstances(std::vector<classPair> &instances);
@@ -34,7 +33,7 @@ private:
 	const float featPct;
 	const Random rng;
 
-	CvANN_MLP mlp ;
+	CvANN_MLP mlp;
 	pthread_mutex_t mlp_mutex;
 };
 

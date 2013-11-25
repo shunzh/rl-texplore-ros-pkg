@@ -26,10 +26,6 @@ MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
 	pthread_mutex_init(&mlp_mutex, NULL);
 }
 
-MultipleLP::~MultipleLP() {
-	// TODO Auto-generated destructor stub
-}
-
 bool MultipleLP::trainInstance(classPair& instance) {
 	std::vector<classPair> vec;
 	vec.push_back(instance);
@@ -47,7 +43,6 @@ bool MultipleLP::trainInstances(std::vector<classPair>& instances) {
 
 	mlp.train(trainingMat, labelMat, sampleWeights);
 	pthread_mutex_unlock(&mlp_mutex);
-
 	return true;
 }
 
@@ -58,8 +53,7 @@ void MultipleLP::testInstance(const std::vector<float>& input,
 	retval->clear();
 
 	Mat testMat = getTestingMat(input);
-	float* output = new float();
-	Mat responseMat(1, 1, CV_32FC1, output);
+	Mat responseMat(1, 1, CV_32FC1);
 
 	if (CVDEBUG) {
 		std::cout << "Test:" << std::endl << testMat << std::endl << trainingMat << std::endl << "OK." << std::endl;

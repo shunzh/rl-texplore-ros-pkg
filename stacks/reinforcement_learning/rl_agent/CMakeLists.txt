@@ -83,10 +83,10 @@ rosbuild_add_library(agentlib
   src/newmat/newmat9.cc
 )
 
-target_link_libraries(agentlib ${OpenCV_LIBS})
+target_link_libraries(agentlib debug ${OpenCV_LIBS})
 
 rosbuild_add_executable(agent
   src/agent.cpp
 )
 
-target_link_libraries(agent agentlib)
+target_link_libraries(agent debug agentlib)
