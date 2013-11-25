@@ -10,7 +10,7 @@
 using namespace cv;
 
 OpencvClassifier::OpencvClassifier() :
-	CVDEBUG(false) {
+	CVDEBUG(true) {
 
 }
 

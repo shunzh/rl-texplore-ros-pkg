@@ -34,9 +34,6 @@ private:
 	const float featPct;
 	const Random rng;
 
-	// DEBUG
-	const bool SVMDEBUG;
-
 	// SVM
 	CvSVMParams params;
 	CvSVM SVM;

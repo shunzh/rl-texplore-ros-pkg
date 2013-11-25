@@ -12,7 +12,7 @@ using namespace cv;
 SupportVM::SupportVM(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),
-	featPct(featPct), rng(rng), SVMDEBUG(true) {
+	featPct(featPct), rng(rng) {
 
 	pthread_mutex_init(&svm_mutex, NULL);
 
@@ -56,11 +56,11 @@ void SupportVM::testInstance(const std::vector<float>& input,
 		pthread_mutex_unlock(&svm_mutex);
 		return;
 	}
-	float predit = SVM.predict(testMat);
 
-	if (SVMDEBUG) {
-		std::cout << "Predict: " << predit << std::endl;
+	if (CVDEBUG) {
+		std::cout << "Test:" << std::endl << testMat << std::endl << trainingMat << std::endl << "OK." << std::endl;
 	}
+	float predit = SVM.predict(testMat);
 
 	(*retval)[predit] = 1.0;
 	pthread_mutex_unlock(&svm_mutex);
