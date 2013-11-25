@@ -22,6 +22,8 @@ MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
 	layers.row(3) = Scalar (1);
 
 	mlp.create(layers);
+
+	pthread_mutex_init(&mlp_mutex, NULL);
 }
 
 MultipleLP::~MultipleLP() {
