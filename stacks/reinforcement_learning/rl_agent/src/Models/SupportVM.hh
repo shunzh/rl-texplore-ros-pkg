@@ -11,7 +11,6 @@
 #define SUPPORTVM_H_
 
 #include <rl_common/core.hh>
-#include "OpencvClassifier.hh"
 
 class SupportVM: public Classifier {
 public:

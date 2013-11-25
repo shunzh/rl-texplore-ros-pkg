@@ -33,5 +33,4 @@ rosbuild_add_executable(experiment
   src/rl.cc
 )
 
-target_link_libraries(experiment debug agentlib)
-target_link_libraries(experiment debug envlib)
+target_link_libraries(experiment agentlib envlib)

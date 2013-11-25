@@ -7,8 +7,6 @@
 
 #include "MultipleLP.hh"
 
-using namespace cv;
-
 MultipleLP::MultipleLP(int id, int trainMode, int trainFreq, int m,
         float featPct, Random rng):
 	id(id), mode(trainMode), freq(trainFreq), M(m),

@@ -11,7 +11,6 @@
 #define MULTIPLELP_H_
 
 #include <rl_common/core.hh>
-#include "OpencvClassifier.hh"
 
 class MultipleLP: public Classifier {
 public:
