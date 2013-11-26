@@ -7,7 +7,7 @@
 
 #include <rl_env/Asterix.hh>
 
-Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
+Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe):
 	height(6), width(15),
 	pos(2),
 	s(3),
@@ -16,7 +16,8 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p):
 	extraVar(extraVariation),
 	noisy(stoch),
 	rng(rand),
-	prints(p)
+	prints(p),
+	domSpecific(domspe)
 {
 	objPos = new int[height];
 	direction = new direct_t[height];
@@ -105,24 +106,24 @@ void Asterix::resetPhase() {
 }
 
 void Asterix::updateFeatures() {
-	// general
-	/*
-	for (int i = 0; i < height; i++) {
-		s[i] = objPos[i];
+	if (domSpecific) {
+		s[0] = objPos[ns] - ew;
+
+		if (ns > 0) s[1] = objPos[ns - 1] - ew;
+		else s[1] = objPos[ns] - ew; // if no previous row, use the position in this row
+
+		if (ns < height - 1) s[2] = objPos[ns + 1] - ew;
+		else s[2] = objPos[ns] - ew; // if no following row, use the position in this row
 	}
+	else {
+		// general
+		for (int i = 0; i < height; i++) {
+			s[i] = objPos[i];
+		}
 
-	s[height] = ns;
-	s[height + 1] = ew;
-	*/
-
-	// domain specific
-	s[0] = objPos[ns] - ew;
-
-	if (ns > 0) s[1] = objPos[ns - 1] - ew;
-	else s[1] = objPos[ns] - ew; // if no previous row, use the position in this row
-
-	if (ns < height - 1) s[2] = objPos[ns + 1] - ew;
-	else s[2] = objPos[ns] - ew; // if no following row, use the position in this row
+		s[height] = ns;
+		s[height + 1] = ew;
+	}
 }
 
 bool Asterix::killed() const {

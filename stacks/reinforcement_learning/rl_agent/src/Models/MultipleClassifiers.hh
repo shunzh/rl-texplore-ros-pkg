@@ -10,7 +10,7 @@
 #include "../Models/M5Tree.hh"
 #include "../Models/LinearSplitsTree.hh"
 #include "../Models/SupportVM.hh"
-#include "../Models/MultipleLP.hh"
+#include "../Models/NeuralNetwork.hh"
 
 #include "../Models/Stump.hh"
 

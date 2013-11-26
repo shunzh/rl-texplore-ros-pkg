@@ -12,17 +12,17 @@
 
 #include <rl_common/core.hh>
 
-class MultipleLP: public Classifier {
+class NeuralNetwork: public Classifier {
 public:
-	MultipleLP(int id, int trainMode, int trainFreq, int m,
+	NeuralNetwork(int id, int trainMode, int trainFreq, int m,
 			  float featPct, Random rng);
-	virtual ~MultipleLP();
+	virtual ~NeuralNetwork();
 
 	virtual bool trainInstance(classPair &instance);
 	virtual bool trainInstances(std::vector<classPair> &instances);
 	virtual void testInstance(const std::vector<float> &input, std::map<float, float>* retval);
 	virtual float getConf(const std::vector<float> &input);
-	virtual MultipleLP* getCopy();
+	virtual NeuralNetwork* getCopy();
 
 private:
 	const int id;

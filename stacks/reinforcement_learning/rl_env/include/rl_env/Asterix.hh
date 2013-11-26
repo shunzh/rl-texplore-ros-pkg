@@ -20,7 +20,7 @@
 
 class Asterix: public Environment {
 public:
-  Asterix(Random &rand, bool extraVariation, bool stoch, bool p);
+  Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe);
   virtual ~Asterix();
 
   virtual const std::vector<float> &sensation() const;
@@ -73,6 +73,8 @@ private:
   int steps;
   // TODO number of food picked
   int foodPicked;
+
+  bool domSpecific;
 };
 
 #endif /* ASTERIX_HH_ */

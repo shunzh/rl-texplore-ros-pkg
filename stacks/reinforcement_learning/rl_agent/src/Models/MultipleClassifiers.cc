@@ -459,7 +459,7 @@ void MultipleClassifiers::initModels(){
       models[i] = new SupportVM(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
     else if (modelType == ANN) {
-      models[i] = new MultipleLP(id + i*(1+nModels), mode, freq, 0, featPct, rng);
+      models[i] = new NeuralNetwork(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
     else {
       cout << "Invalid model type for this committee " << modelType << endl;
