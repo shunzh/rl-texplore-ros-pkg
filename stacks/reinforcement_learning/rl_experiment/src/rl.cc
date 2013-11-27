@@ -779,7 +779,7 @@ int main(int argc, char **argv) {
   // naive asterix domain
   else if (strcmp(envType, "asterix") == 0){
     if (PRINTS) cout << "Environment: Asterix\n";
-    e = new Asterix(rng, highvar, stochastic, domspe, PRINTS);
+    e = new Asterix(rng, highvar, stochastic, PRINTS, domspe);
   }
 
   // stocks
