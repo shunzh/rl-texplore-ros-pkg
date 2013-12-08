@@ -10,7 +10,7 @@
 Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe):
 	height(6), width(15),
 	pos(2),
-	s(5),
+	s(4),
 	ns(pos[0]),
 	ew(pos[1]),
 	extraVar(extraVariation),
@@ -41,7 +41,7 @@ const std::vector<float> &Asterix::sensation() const {
 float Asterix::apply(int action) {
 	float reward = 0;
 
-	int killedR = -1000, bonusR = 200;
+	int killedR = -1000, bonusR = 20;
 
 	// determine ghost or food
 	setPhase();
@@ -110,10 +110,11 @@ void Asterix::setPhase() {
 		phase = GHOST;
 		for (int i = 0; i < height; i++) objCate[i] = phase;
 	}
+	/*
 	else if (steps % (oneRun * 2) == oneRun) {
 		phase = FOOD;
 		for (int i = 0; i < height; i++) objCate[i] = phase;
-	}
+	}*/
 }
 
 void Asterix::resetPhase() {
@@ -164,7 +165,10 @@ bool Asterix::killed() const {
 bool Asterix::bonus() {
 	if (objPos[ns] == ew && objCate[ns] == FOOD) {
 		objCate[ns] = NOTHING;
-		std::cout << "EATEN!!!!!!!!!!!!!!" << std::endl;
+
+		if (prints) {
+			std::cout << "EATEN!!!!!!!!!!!!!!" << std::endl;
+		}
 		return true;
 	}
 	else return false;
