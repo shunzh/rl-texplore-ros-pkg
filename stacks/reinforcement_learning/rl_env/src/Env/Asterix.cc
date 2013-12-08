@@ -7,7 +7,7 @@
 
 #include <rl_env/Asterix.hh>
 
-Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe):
+Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, int f):
 	height(6), width(15),
 	pos(2),
 	s(4),
@@ -17,14 +17,18 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool dom
 	noisy(stoch),
 	rng(rand),
 	prints(p),
-	domSpecific(domspe)
+	featureSet(f)
 {
 	objPos = new int[height];
 	direction = new direct_t[height];
 	objCate = new object_t[height];
 
-	if (!domspe)
+	if (f == 1) {
 		s.resize(height + 3);
+	}
+	else if (f == 2) {
+		s.resize(1);
+	}
 
 	reset();
 }
@@ -122,26 +126,29 @@ void Asterix::resetPhase() {
 }
 
 void Asterix::updateFeatures() {
-	if (domSpecific) {
-		s[0] = objCate[ns] != NOTHING ? objPos[ns] - ew : -10;
+	int nothing = -10;
 
-		if (ns > 0) s[1] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : -10;
+	if (featureSet == 0) {
+		// domain specific
+		s[0] = objCate[ns] != NOTHING ? objPos[ns] - ew : nothing;
+
+		if (ns > 0) s[1] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : nothing;
 		else s[1] = s[0]; // if no previous row, use the position in this row
 
-		if (ns < height - 1) s[2] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : -10;
+		if (ns < height - 1) s[2] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : nothing;
 		else s[2] = s[0]; // if no following row, use the position in this row
 
 		if (phase == GHOST) s[3] = 0;
 		else s[3] = 1;
 	}
-	else {
+	else if (featureSet == 1) {
 		// general
 		for (int i = 0; i < height; i++) {
 			if (objCate[i] != NOTHING) {
 				s[i] = objPos[i];
 			}
 			else {
-				s[i] = -10;
+				s[i] = nothing;
 			}
 		}
 
@@ -150,6 +157,11 @@ void Asterix::updateFeatures() {
 
 		if (phase == GHOST) s[height + 2] = 0;
 		else s[height + 2] = 1;
+	}
+	else if (featureSet == 2) {
+		// insufficient
+		if (objCate[ns] == NOTHING) s[0] = nothing;
+		else s[0] = ew;
 	}
 
 	if (prints) {

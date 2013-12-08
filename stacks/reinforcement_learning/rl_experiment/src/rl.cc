@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
   bool highvar = false;
   int history = 0;
   int seed = 1;
-  bool domspe = false; // using domain specific features
+  int featureSet = 0; // using domain specific features
 
   ostream* out = &std::cout; // cout as default
   char fileName[100];
@@ -235,7 +235,7 @@ int main(int argc, char **argv) {
     {"highvar", 0, 0, 11},
     {"nepisodes", 1, 0, 12},
     {"output", 1, 0, 14},
-    {"domspe", 0, 0, 15}
+    {"features", 1, 0, 15}
   };
 
   bool epsilonChanged = false;
@@ -623,7 +623,8 @@ int main(int argc, char **argv) {
       break;
 
     case 15:
-      domspe = true;
+      featureSet = std::atoi(optarg);
+      cout << "Feature Selection: " << featureSet << endl;
       break;
 
     case 'h':
@@ -779,7 +780,7 @@ int main(int argc, char **argv) {
   // naive asterix domain
   else if (strcmp(envType, "asterix") == 0){
     if (PRINTS) cout << "Environment: Asterix\n";
-    e = new Asterix(rng, highvar, stochastic, PRINTS, domspe);
+    e = new Asterix(rng, highvar, stochastic, PRINTS, featureSet);
   }
 
   // stocks

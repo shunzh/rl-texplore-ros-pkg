@@ -22,7 +22,7 @@
 
 class Asterix: public Environment {
 public:
-  Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe);
+  Asterix(Random &rand, bool extraVariation, bool stoch, bool p, int f);
   virtual ~Asterix();
 
   virtual const std::vector<float> &sensation() const;
@@ -76,7 +76,12 @@ private:
   // current phase
   object_t phase;
 
-  bool domSpecific;
+  /**
+   *  0 - this row and surronding rows
+   *  1 - everything
+   *  2 - ONLY the object in this row
+   */
+  int featureSet;
 };
 
 #endif /* ASTERIX_HH_ */
