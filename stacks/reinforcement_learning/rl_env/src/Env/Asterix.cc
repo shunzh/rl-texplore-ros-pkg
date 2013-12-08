@@ -27,7 +27,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, int f):
 		s.resize(height + 3);
 	}
 	else if (f == 2) {
-		s.resize(1);
+		s.resize(2);
 	}
 
 	reset();
@@ -161,7 +161,9 @@ void Asterix::updateFeatures() {
 	else if (featureSet == 2) {
 		// insufficient
 		if (objCate[ns] == NOTHING) s[0] = nothing;
-		else s[0] = ew;
+		else s[0] = objPos[ns];
+
+		s[1] = ew;
 	}
 
 	if (prints) {
