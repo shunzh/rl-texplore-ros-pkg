@@ -18,6 +18,7 @@
 #define ASTERIX_HH_
 
 #include <rl_common/core.hh>
+#include <iterator>
 
 class Asterix: public Environment {
 public:
@@ -72,8 +73,8 @@ private:
   object_t* objCate;
   // record number of steps
   int steps;
-  // TODO number of food picked
-  int foodPicked;
+  // current phase
+  object_t phase;
 
   bool domSpecific;
 };

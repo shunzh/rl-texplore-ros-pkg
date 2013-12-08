@@ -10,7 +10,7 @@
 Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe):
 	height(6), width(15),
 	pos(2),
-	s(4),
+	s(5),
 	ns(pos[0]),
 	ew(pos[1]),
 	extraVar(extraVariation),
@@ -22,6 +22,9 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool dom
 	objPos = new int[height];
 	direction = new direct_t[height];
 	objCate = new object_t[height];
+
+	if (!domspe)
+		s.resize(height + 3);
 
 	reset();
 }
@@ -38,9 +41,10 @@ const std::vector<float> &Asterix::sensation() const {
 float Asterix::apply(int action) {
 	float reward = 0;
 
-	if (steps % ((width + 1) * 2) == 0 && steps != 0) {
-		setPhase();
-	}
+	int killedR = -1000, bonusR = 200;
+
+	// determine ghost or food
+	setPhase();
 
 	// advance of agent
 	if (action == NORTH && ns > 0) {
@@ -57,8 +61,8 @@ float Asterix::apply(int action) {
 	}
 
 	// survival check
-	if (killed()) return -1000;
-	if (bonus()) reward = 200;
+	if (killed()) return killedR;
+	if (bonus()) reward = bonusR;
 
 	// advance of objects
 	for (int i = 0; i < height; i++) {
@@ -85,14 +89,13 @@ float Asterix::apply(int action) {
 	}
 
 	// survival check, again
-	if (killed()) return -1000;
-	if (bonus()) reward = 200;
+	if (killed()) return killedR;
+	if (bonus()) reward = bonusR;
 
 	// maintaining stuff
 	updateFeatures();
 	steps++;
 
-	// debug
 	if (prints) print();
 
 	// reward for being alive
@@ -100,10 +103,17 @@ float Asterix::apply(int action) {
 }
 
 void Asterix::setPhase() {
-	if (objPos[0] == 0 && objCate == GHOST && direction[0] == LEFT)
-		for (int i = 0; i < height; i++) objCate[i] = FOOD;
-	else if (objPos[0] == 0 && direction[0] == LEFT)
-		for (int i = 0; i < height; i++) objCate[i] = GHOST;
+	int oneRun = (width - 1) * 2;
+
+	// DEBUG
+	if (steps % (oneRun * 2) == 0) {
+		phase = GHOST;
+		for (int i = 0; i < height; i++) objCate[i] = phase;
+	}
+	else if (steps % (oneRun * 2) == oneRun) {
+		phase = FOOD;
+		for (int i = 0; i < height; i++) objCate[i] = phase;
+	}
 }
 
 void Asterix::resetPhase() {
@@ -112,22 +122,38 @@ void Asterix::resetPhase() {
 
 void Asterix::updateFeatures() {
 	if (domSpecific) {
-		s[0] = objPos[ns] - ew;
+		s[0] = objCate[ns] != NOTHING ? objPos[ns] - ew : -10;
 
-		if (ns > 0) s[1] = objPos[ns - 1] - ew;
-		else s[1] = objPos[ns] - ew; // if no previous row, use the position in this row
+		if (ns > 0) s[1] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : -10;
+		else s[1] = s[0]; // if no previous row, use the position in this row
 
-		if (ns < height - 1) s[2] = objPos[ns + 1] - ew;
-		else s[2] = objPos[ns] - ew; // if no following row, use the position in this row
+		if (ns < height - 1) s[2] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : -10;
+		else s[2] = s[0]; // if no following row, use the position in this row
+
+		if (phase == GHOST) s[3] = 0;
+		else s[3] = 1;
 	}
 	else {
 		// general
 		for (int i = 0; i < height; i++) {
-			s[i] = objPos[i];
+			if (objCate[i] != NOTHING) {
+				s[i] = objPos[i];
+			}
+			else {
+				s[i] = -10;
+			}
 		}
 
 		s[height] = ns;
 		s[height + 1] = ew;
+
+		if (phase == GHOST) s[height + 2] = 0;
+		else s[height + 2] = 1;
+	}
+
+	if (prints) {
+		copy(s.begin(), s.end(), ostream_iterator<float>(std::cout, " "));
+		std::cout << std::endl;
 	}
 }
 
@@ -138,7 +164,7 @@ bool Asterix::killed() const {
 bool Asterix::bonus() {
 	if (objPos[ns] == ew && objCate[ns] == FOOD) {
 		objCate[ns] = NOTHING;
-		foodPicked++;
+		std::cout << "EATEN!!!!!!!!!!!!!!" << std::endl;
 		return true;
 	}
 	else return false;
