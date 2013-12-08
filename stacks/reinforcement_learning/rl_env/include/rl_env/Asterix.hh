@@ -8,6 +8,7 @@
  * horizontal distance to the ghost in the current row
  * horizontal distance to the ghost in the previous row
  * horizontal distance to the ghost in the next row
+ * ghost / food phase
  *
  *  Created on: Nov 10, 2013
  *      Author: menie

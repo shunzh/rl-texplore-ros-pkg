@@ -10,7 +10,7 @@
 Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, bool domspe):
 	height(6), width(15),
 	pos(2),
-	s(3),
+	s(4),
 	ns(pos[0]),
 	ew(pos[1]),
 	extraVar(extraVariation),
@@ -36,8 +36,11 @@ const std::vector<float> &Asterix::sensation() const {
 }
 
 float Asterix::apply(int action) {
-	// TODO at some frequency, reset food / ghost
-	setPhase();
+	float reward = 0;
+
+	if (steps % ((width + 1) * 2) == 0 && steps != 0) {
+		setPhase();
+	}
 
 	// advance of agent
 	if (action == NORTH && ns > 0) {
@@ -55,9 +58,9 @@ float Asterix::apply(int action) {
 
 	// survival check
 	if (killed()) return -1000;
-	if (bonus()) return 200;
+	if (bonus()) reward = 200;
 
-	// advance of ghosts
+	// advance of objects
 	for (int i = 0; i < height; i++) {
 		if (direction[i] == LEFT) {
 			if (objPos[i] == 0) {
@@ -83,7 +86,7 @@ float Asterix::apply(int action) {
 
 	// survival check, again
 	if (killed()) return -1000;
-	if (bonus()) return 200;
+	if (bonus()) reward = 200;
 
 	// maintaining stuff
 	updateFeatures();
@@ -93,11 +96,13 @@ float Asterix::apply(int action) {
 	if (prints) print();
 
 	// reward for being alive
-	return 1;
+	return reward + 1;
 }
 
 void Asterix::setPhase() {
-	if (objPos[0] == 0)
+	if (objPos[0] == 0 && objCate == GHOST && direction[0] == LEFT)
+		for (int i = 0; i < height; i++) objCate[i] = FOOD;
+	else if (objPos[0] == 0 && direction[0] == LEFT)
 		for (int i = 0; i < height; i++) objCate[i] = GHOST;
 }
 
@@ -132,7 +137,7 @@ bool Asterix::killed() const {
 
 bool Asterix::bonus() {
 	if (objPos[ns] == ew && objCate[ns] == FOOD) {
-		objPos[ns] = NOTHING;
+		objCate[ns] = NOTHING;
 		foodPicked++;
 		return true;
 	}
@@ -177,7 +182,7 @@ void Asterix::getMinMaxFeatures(std::vector<float> *minFeat, std::vector<float> 
 
 void Asterix::getMinMaxReward(float* minR, float* maxR) {
 	*minR = -1000;
-	*maxR = 1;
+	*maxR = 20;
 }
 
 void Asterix::print() {
