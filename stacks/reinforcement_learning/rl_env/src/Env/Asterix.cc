@@ -24,7 +24,7 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, int f):
 	objCate = new object_t[height];
 
 	if (f == 1) {
-		s.resize(height + 3);
+		s.resize(height + 2);
 	}
 	else if (f == 2) {
 		s.resize(2);
@@ -130,16 +130,15 @@ void Asterix::updateFeatures() {
 
 	if (featureSet == 0) {
 		// domain specific
-		s[0] = objCate[ns] != NOTHING ? objPos[ns] - ew : nothing;
+		s[0] = ew;
 
-		if (ns > 0) s[1] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : nothing;
-		else s[1] = s[0]; // if no previous row, use the position in this row
+		s[1] = objCate[ns] != NOTHING ? objPos[ns] - ew : nothing;
 
-		if (ns < height - 1) s[2] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : nothing;
-		else s[2] = s[0]; // if no following row, use the position in this row
+		if (ns > 0) s[2] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : nothing;
+		else s[2] = s[0]; // if no previous row, use the position in this row
 
-		if (phase == GHOST) s[3] = 0;
-		else s[3] = 1;
+		if (ns < height - 1) s[3] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : nothing;
+		else s[3] = s[0]; // if no following row, use the position in this row
 	}
 	else if (featureSet == 1) {
 		// general
@@ -154,9 +153,6 @@ void Asterix::updateFeatures() {
 
 		s[height] = ns;
 		s[height + 1] = ew;
-
-		if (phase == GHOST) s[height + 2] = 0;
-		else s[height + 2] = 1;
 	}
 	else if (featureSet == 2) {
 		// insufficient

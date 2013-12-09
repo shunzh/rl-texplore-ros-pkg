@@ -3,9 +3,9 @@
 
 *. Different set of features.
 - General. OK
-- Domain-specific. OK
-- Insufficient.
-  > Running in Condor
+- Domain-specific.
+  > Re-running. collect wrong one?
+- Insufficient. OK
 
 *. Feature learning.
 - Related papers:
