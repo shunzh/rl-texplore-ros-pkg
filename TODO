@@ -1,9 +1,25 @@
-Enable multiple model learning. OK.
+*. Enable multiple model learning. OK.
 - Defined set of models in factored model.
 
+*. Different set of features.
+- General. OK
+- Domain-specific. OK
+- Insufficient.
+  > Running in Condor
+
+*. Feature learning.
+- Related papers:
+  http://www.manoonpong.com/paper/2010/ManoonpongICONIP2010.pdf
+  http://machinelearning.wustl.edu/mlpapers/paper_files/ICML2011Geramifard_473.pdf
+
+*. Self-identification.
+- Matthew's paper.
+
+*. Dynamic environment.
+- Proposed: global transition model?
+
+FUTURE:
+
 Add ANN and SVM.
-- Experience is state + action -> reward
-
 Test each model separately.
-
 Integreate models.
