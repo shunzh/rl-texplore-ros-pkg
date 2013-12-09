@@ -135,10 +135,10 @@ void Asterix::updateFeatures() {
 		s[1] = objCate[ns] != NOTHING ? objPos[ns] - ew : nothing;
 
 		if (ns > 0) s[2] = objCate[ns - 1] != NOTHING ? objPos[ns - 1] - ew : nothing;
-		else s[2] = s[0]; // if no previous row, use the position in this row
+		else s[2] = s[1]; // if no previous row, use the position in this row
 
 		if (ns < height - 1) s[3] = objCate[ns + 1] != NOTHING ? objPos[ns + 1] - ew : nothing;
-		else s[3] = s[0]; // if no following row, use the position in this row
+		else s[3] = s[1]; // if no following row, use the position in this row
 	}
 	else if (featureSet == 1) {
 		// general
