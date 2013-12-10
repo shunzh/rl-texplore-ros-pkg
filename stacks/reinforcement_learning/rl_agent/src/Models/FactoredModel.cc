@@ -201,6 +201,7 @@ bool FactoredModel::updateWithExperiences(std::vector<experience> &instances){
   if (MODEL_DEBUG) cout << "FactoredModel updateWithExperiences : " << instances.size() << endl;
 
   bool changed = false;
+  // For initialization
   if (outputModels.size() == 0){
     nfactors = instances[0].next.size();
     initMDPModel(instances[0].next.size());
