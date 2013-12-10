@@ -74,8 +74,10 @@ public:
 
   /** Helper function to subtract two vectors */
   std::vector<float> subVec(const std::vector<float> &a, const std::vector<float> &b);
-  
+
 private:
+  /** Return true if it's a self feature. */
+  bool isSelfFeat(int j);
   
   /** Classifier to predict each feature */
   std::vector<Classifier*> outputModels;

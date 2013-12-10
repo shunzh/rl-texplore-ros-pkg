@@ -265,11 +265,19 @@ bool FactoredModel::updateWithExperiences(std::vector<experience> &instances){
     if (!e.terminal){
       for (unsigned j = 0; j < outputModels.size(); j++){
         classPair cp;
-        cp.in = inputs;
+        std::vector<float> inputs_ = inputs;
+
+        // if feature j is an env feature, clear action
+        if (!isSelfFeat(j)) {
+        	inputs_[e.s.size() + j] = 0;
+        }
+
+        cp.in = inputs_;
 
         // split the outcome and rewards up
         // into each vector
         cp.out = e.next[j];
+
         stateData[j][nonTermIndex] = cp;
 
         // for dep trees, add this models target to next model's input
@@ -372,7 +380,14 @@ bool FactoredModel::updateWithExperience(experience &e){
   // if not a terminal transition
   if (!e.terminal){
     for (unsigned i = 0; i < e.next.size(); i++){
-      cp.in = inputs;
+      std::vector<float> inputs_ = inputs;
+
+      // if feature j is an env feature, clear action
+      if (!isSelfFeat(i)) {
+        inputs_[e.s.size() + i] = 0;
+      }
+
+      cp.in = inputs_;
       cp.out = e.next[i];
 
       bool singleChange = outputModels[i]->trainInstance(cp);
@@ -389,7 +404,6 @@ bool FactoredModel::updateWithExperience(experience &e){
   return changed;
 
 }
-
 
 float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, StateActionInfo* retval){
 
@@ -802,3 +816,8 @@ std::vector<float> FactoredModel::subVec(const std::vector<float> &a, const std:
   return c;
 }
 
+bool FactoredModel::isSelfFeat(int j) {
+  // FIXME overfit
+  if (j == 6 || j == 7) return true;
+  else return false;
+}
