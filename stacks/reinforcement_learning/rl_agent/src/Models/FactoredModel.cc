@@ -435,10 +435,16 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   // just pick one sample from each feature prediction
   std::vector<float>output(nfactors);
   for (int i = 0; i < nfactors; i++){
+	std::vector<float> inputs_ = inputs;
+
+	// if feature i is an env feature, clear action
+	if (!isSelfFeat(i)) {
+	  inputs_[state.size() + i] = 0;
+	}
 
     // get prediction
     std::map<float, float> outputPreds;
-    outputModels[i]->testInstance(inputs, &outputPreds);
+    outputModels[i]->testInstance(inputs_, &outputPreds);
 
     // sample a value
     float randProb = rng.uniform();
@@ -449,8 +455,8 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
       probSum += (*it1).second;
 
       if (randProb <= probSum){
-	output[i] = (*it1).first;
-	break;
+		output[i] = (*it1).first;
+		break;
       }
     }
   }
@@ -548,7 +554,7 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
   }
   // convert to binary vector of length nact
   for (int k = 0; k < nact; k++){
-    if (act == k)
+	if (act == k)
       inputs[state.size()+k] = 1;
     else
       inputs[state.size()+k] = 0;
@@ -571,6 +577,9 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
     ///////////////////////////////////////////
     // alternate version -> assuming one model that gives one prediction
     ///////////////////////////////////////////
+	/**
+	 * I'm ignoring it here regarding to model separation for self and env -Shun
+	 */
     std::vector<float> MLnext(nfactors);
     std::vector<float> inputCopy = inputs;
     for (int i = 0; i < nfactors; i++){
@@ -606,7 +615,14 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
     std::vector< std::map<float,float> > predictions(nfactors);
     if (!dep){
       for (int i = 0; i < nfactors; i++){
-        outputModels[i]->testInstance(inputs, &(predictions[i]));
+		std::vector<float> inputs_ = inputs;
+
+		// if feature i is an env feature, clear action
+		if (!isSelfFeat(i)) {
+		  inputs_[state.size() + i] = 0;
+		}
+
+        outputModels[i]->testInstance(inputs_, &(predictions[i]));
       }
     }
 

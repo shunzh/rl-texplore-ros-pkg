@@ -12,9 +12,10 @@
   http://machinelearning.wustl.edu/mlpapers/paper_files/ICML2011Geramifard_473.pdf
 
 *. Self-identification.
-- Try if done.
-  > Run experiment to verify the effect of separating SxA->S and S->S
 - Matthew's paper.
+- Try if done.
+  S -> S' for environmental
+  S x A -> S' for self
 
 *. Dynamic environment.
 - Proposed: global transition model?
