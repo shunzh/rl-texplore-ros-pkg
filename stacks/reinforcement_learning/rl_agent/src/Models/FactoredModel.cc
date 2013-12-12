@@ -266,12 +266,7 @@ bool FactoredModel::updateWithExperiences(std::vector<experience> &instances){
       for (unsigned j = 0; j < outputModels.size(); j++){
         classPair cp;
 
-        if (isSelfFeat(j)) {
-        	cp.in = getSelfInputs(inputs);
-        }
-        else {
-        	cp.in = getEnvInputs(inputs);
-        }
+        cp.in = getFeaturesToPred(inputs, j);
 
         // split the outcome and rewards up
         // into each vector
@@ -379,13 +374,7 @@ bool FactoredModel::updateWithExperience(experience &e){
   // if not a terminal transition
   if (!e.terminal){
     for (unsigned i = 0; i < e.next.size(); i++){
-    	if (isSelfFeat(i)) {
-    		cp.in = getSelfInputs(inputs);
-    	}
-    	else {
-    	  cp.in = getEnvInputs(inputs);
-    	}
-
+    	cp.in = getFeaturesToPred(inputs, i);
       cp.out = e.next[i];
 
       bool singleChange = outputModels[i]->trainInstance(cp);
@@ -433,14 +422,7 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   // just pick one sample from each feature prediction
   std::vector<float>output(nfactors);
   for (int i = 0; i < nfactors; i++){
-  	std::vector<float> inputs_;
-
-  	if (isSelfFeat(i)) {
-			inputs_ = getSelfInputs(inputs);
-		}
-		else {
-			inputs_ = getEnvInputs(inputs);
-		}
+  	std::vector<float> inputs_ = getFeaturesToPred(inputs, i);
 
 		// get prediction
 		std::map<float, float> outputPreds;
@@ -577,15 +559,13 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
     ///////////////////////////////////////////
     // alternate version -> assuming one model that gives one prediction
     ///////////////////////////////////////////
-	/**
-	 * I'm ignoring it here regarding to model separation for self and env -Shun
-	 */
     std::vector<float> MLnext(nfactors);
     std::vector<float> inputCopy = inputs;
     for (int i = 0; i < nfactors; i++){
       // get single outcome for this factor
       std::map<float, float> outputPreds;
-      outputModels[i]->testInstance(inputCopy, &outputPreds);
+      std::vector<float> inputCopy_ = getFeaturesToPred(inputCopy, i);
+      outputModels[i]->testInstance(inputCopy_, &outputPreds);
       if (needConf && dep) confSum += outputModels[i]->getConf(inputCopy);
       float val = outputPreds.begin()->first;
       if (relTrans) val = val + inputs[i];
@@ -615,14 +595,7 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
 			std::vector< std::map<float,float> > predictions(nfactors);
 			if (!dep){
 				for (int i = 0; i < nfactors; i++){
-					std::vector<float> inputs_;
-
-					if (isSelfFeat(i)) {
-						inputs_ = getSelfInputs(inputs);
-					}
-					else {
-						inputs_ = getEnvInputs(inputs);
-					}
+					std::vector<float> inputs_ = getFeaturesToPred(inputs, i);
 
 					outputModels[i]->testInstance(inputs_, &(predictions[i]));
       }
@@ -741,7 +714,8 @@ void FactoredModel::addFactorProb(float* probs, std::vector<float>* next, std::v
 
   // get prediction each time for dep
   if (dep){
-    outputModels[index]->testInstance(x, &outputPreds);
+  	std::vector<float> x_ = getFeaturesToPred(x, index);
+    outputModels[index]->testInstance(x_, &outputPreds);
   }
 
   // sum up confidences
@@ -834,22 +808,20 @@ std::vector<float> FactoredModel::subVec(const std::vector<float> &a, const std:
   return c;
 }
 
-bool FactoredModel::isSelfFeat(int j) {
-  // FIXME overfit
-  if (j == 6 || j == 7) return true;
-  else return false;
-}
 
-std::vector<float> FactoredModel::getSelfInputs(std::vector<float> inputs) {
-	// self features + actions
-	std::vector<float> retval(inputs.begin() + 6, inputs.end());
+std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, int fid) {
+	std::vector<float> retval;
+	// FIXME overfit
+	int domainRange = 6;
 
-	return retval;
-}
-
-std::vector<float> FactoredModel::getEnvInputs(std::vector<float> inputs) {
-	// env features
-	std::vector<float> retval(inputs.begin(), inputs.begin() + 5);
+	if (fid < domainRange) {
+		// each agent
+		retval.push_back(inputs[fid]);
+	}
+	else {
+		// self
+		retval.assign(inputs.begin() + domainRange, inputs.end());
+	}
 
 	return retval;
 }
