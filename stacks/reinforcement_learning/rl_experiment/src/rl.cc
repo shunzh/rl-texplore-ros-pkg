@@ -131,6 +131,7 @@ int main(int argc, char **argv) {
   int history = 0;
   int seed = 1;
   int featureSet = 0; // using domain specific features
+  bool sepa = false;
 
   ostream* out = &std::cout; // cout as default
   char fileName[100];
@@ -235,7 +236,8 @@ int main(int argc, char **argv) {
     {"highvar", 0, 0, 11},
     {"nepisodes", 1, 0, 12},
     {"output", 1, 0, 14},
-    {"features", 1, 0, 15}
+    {"features", 1, 0, 15},
+    {"sepa", 0, 0, 16}
   };
 
   bool epsilonChanged = false;
@@ -626,6 +628,10 @@ int main(int argc, char **argv) {
       featureSet = std::atoi(optarg);
       cout << "Feature Selection: " << featureSet << endl;
       break;
+
+    case 16:
+    	sepa = true;
+    	break;
 
     case 'h':
     case '?':

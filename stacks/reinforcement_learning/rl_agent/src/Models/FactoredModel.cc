@@ -810,6 +810,9 @@ std::vector<float> FactoredModel::subVec(const std::vector<float> &a, const std:
 
 
 std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, int fid) {
+	// DUMMY
+	return inputs;
+	/*
 	std::vector<float> retval;
 	// FIXME overfit
 	int domainRange = 6;
@@ -823,5 +826,5 @@ std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, i
 		retval.assign(inputs.begin() + domainRange, inputs.end());
 	}
 
-	return retval;
+	return retval;*/
 }
