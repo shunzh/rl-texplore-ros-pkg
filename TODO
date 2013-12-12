@@ -16,6 +16,7 @@
 - Try if done.
   S -> S' for environmental
   S x A -> S' for self
+  > Try again
 
 *. Dynamic environment.
 - Proposed: global transition model?

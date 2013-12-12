@@ -22,7 +22,7 @@ FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
 {
 
   //cout << "MDP Tree explore type: " << predType << endl;
-  MODEL_DEBUG = true;
+  MODEL_DEBUG = false;
   COPYDEBUG = false;
 
   // percent of experiences to use for each model
