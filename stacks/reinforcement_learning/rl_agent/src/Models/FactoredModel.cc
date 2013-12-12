@@ -22,7 +22,7 @@ FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
 {
 
   //cout << "MDP Tree explore type: " << predType << endl;
-  MODEL_DEBUG = false;
+  MODEL_DEBUG = true;
   COPYDEBUG = false;
 
   // percent of experiences to use for each model
@@ -265,14 +265,13 @@ bool FactoredModel::updateWithExperiences(std::vector<experience> &instances){
     if (!e.terminal){
       for (unsigned j = 0; j < outputModels.size(); j++){
         classPair cp;
-        std::vector<float> inputs_ = inputs;
 
-        // if feature j is an env feature, clear action
-        if (!isSelfFeat(j)) {
-        	inputs_[e.s.size() + j] = 0;
+        if (isSelfFeat(j)) {
+        	cp.in = getSelfInputs(inputs);
         }
-
-        cp.in = inputs_;
+        else {
+        	cp.in = getEnvInputs(inputs);
+        }
 
         // split the outcome and rewards up
         // into each vector
@@ -380,14 +379,13 @@ bool FactoredModel::updateWithExperience(experience &e){
   // if not a terminal transition
   if (!e.terminal){
     for (unsigned i = 0; i < e.next.size(); i++){
-      std::vector<float> inputs_ = inputs;
+    	if (isSelfFeat(i)) {
+    		cp.in = getSelfInputs(inputs);
+    	}
+    	else {
+    	  cp.in = getEnvInputs(inputs);
+    	}
 
-      // if feature j is an env feature, clear action
-      if (!isSelfFeat(i)) {
-        inputs_[e.s.size() + i] = 0;
-      }
-
-      cp.in = inputs_;
       cp.out = e.next[i];
 
       bool singleChange = outputModels[i]->trainInstance(cp);
@@ -435,30 +433,32 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   // just pick one sample from each feature prediction
   std::vector<float>output(nfactors);
   for (int i = 0; i < nfactors; i++){
-	std::vector<float> inputs_ = inputs;
+  	std::vector<float> inputs_;
 
-	// if feature i is an env feature, clear action
-	if (!isSelfFeat(i)) {
-	  inputs_[state.size() + i] = 0;
-	}
+  	if (isSelfFeat(i)) {
+			inputs_ = getSelfInputs(inputs);
+		}
+		else {
+			inputs_ = getEnvInputs(inputs);
+		}
 
-    // get prediction
-    std::map<float, float> outputPreds;
-    outputModels[i]->testInstance(inputs_, &outputPreds);
+		// get prediction
+		std::map<float, float> outputPreds;
+		outputModels[i]->testInstance(inputs_, &outputPreds);
 
-    // sample a value
-    float randProb = rng.uniform();
-    float probSum = 0;
-    for (std::map<float, float>::iterator it1 = outputPreds.begin(); it1 != outputPreds.end(); it1++){
+		// sample a value
+		float randProb = rng.uniform();
+		float probSum = 0;
+		for (std::map<float, float>::iterator it1 = outputPreds.begin(); it1 != outputPreds.end(); it1++){
 
-      // get prob
-      probSum += (*it1).second;
+			// get prob
+			probSum += (*it1).second;
 
-      if (randProb <= probSum){
-		output[i] = (*it1).first;
-		break;
-      }
-    }
+			if (randProb <= probSum){
+				output[i] = (*it1).first;
+				break;
+			}
+		}
   }
 
   retval->transitionProbs[output] = 1.0;
@@ -607,22 +607,24 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
   }
 
   else {
-    //cout << "mdp tree, combine stochastic predictions for each feature" << endl;
-    //////////////////////////////////////////////////////////////////////
-    // Full version: assume possibly stochastic prediction for each model
-    //////////////////////////////////////////////////////////////////////
-    // grab predicted transition probs just once
-    std::vector< std::map<float,float> > predictions(nfactors);
-    if (!dep){
-      for (int i = 0; i < nfactors; i++){
-		std::vector<float> inputs_ = inputs;
+			//cout << "mdp tree, combine stochastic predictions for each feature" << endl;
+			//////////////////////////////////////////////////////////////////////
+			// Full version: assume possibly stochastic prediction for each model
+			//////////////////////////////////////////////////////////////////////
+			// grab predicted transition probs just once
+			std::vector< std::map<float,float> > predictions(nfactors);
+			if (!dep){
+				for (int i = 0; i < nfactors; i++){
+					std::vector<float> inputs_;
 
-		// if feature i is an env feature, clear action
-		if (!isSelfFeat(i)) {
-		  inputs_[state.size() + i] = 0;
-		}
+					if (isSelfFeat(i)) {
+						inputs_ = getSelfInputs(inputs);
+					}
+					else {
+						inputs_ = getEnvInputs(inputs);
+					}
 
-        outputModels[i]->testInstance(inputs_, &(predictions[i]));
+					outputModels[i]->testInstance(inputs_, &(predictions[i]));
       }
     }
 
@@ -836,4 +838,18 @@ bool FactoredModel::isSelfFeat(int j) {
   // FIXME overfit
   if (j == 6 || j == 7) return true;
   else return false;
+}
+
+std::vector<float> FactoredModel::getSelfInputs(std::vector<float> inputs) {
+	// self features + actions
+	std::vector<float> retval(inputs.begin() + 6, inputs.end());
+
+	return retval;
+}
+
+std::vector<float> FactoredModel::getEnvInputs(std::vector<float> inputs) {
+	// env features
+	std::vector<float> retval(inputs.begin(), inputs.begin() + 5);
+
+	return retval;
 }

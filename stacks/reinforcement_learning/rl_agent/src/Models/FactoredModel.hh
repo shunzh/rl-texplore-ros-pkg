@@ -78,7 +78,9 @@ public:
 private:
   /** Return true if it's a self feature. */
   bool isSelfFeat(int j);
-  
+  std::vector<float> getSelfInputs(std::vector<float> inputs);
+  std::vector<float> getEnvInputs(std::vector<float> inputs);
+
   /** Classifier to predict each feature */
   std::vector<Classifier*> outputModels;
 
