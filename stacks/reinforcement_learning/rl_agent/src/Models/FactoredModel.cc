@@ -6,6 +6,7 @@
 
 #include "FactoredModel.hh"
 
+//#define SEPA
 
 FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
                  int predType, int nModels, float treeThreshold,
@@ -51,7 +52,6 @@ FactoredModel::FactoredModel(const FactoredModel & m):
   MODEL_DEBUG = m.MODEL_DEBUG;
   EXP_PCT = m.EXP_PCT;
   nfactors = m.nfactors;
-
 
   if (m.outputModels.size() > 0){
     if (COPYDEBUG) cout << " FactoredModel copy trees" << endl;
@@ -810,9 +810,7 @@ std::vector<float> FactoredModel::subVec(const std::vector<float> &a, const std:
 
 
 std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, int fid) {
-	// DUMMY
-	return inputs;
-	/*
+#ifdef SEPA
 	std::vector<float> retval;
 	// FIXME overfit
 	int domainRange = 6;
@@ -826,5 +824,8 @@ std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, i
 		retval.assign(inputs.begin() + domainRange, inputs.end());
 	}
 
-	return retval;*/
+	return retval;
+#else
+	return inputs;
+#endif
 }
