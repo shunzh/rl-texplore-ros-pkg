@@ -7,6 +7,7 @@
 #include "FactoredModel.hh"
 
 //#define SEPA
+#define REWARDGIVEN
 
 FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
                  int predType, int nModels, float treeThreshold,
@@ -450,7 +451,11 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   float rewardSum = 0.0;
   // each value
   std::map<float, float> rewardPreds;
+#ifdef REWARDGIVEN
+  setRewards(inputs, &rewardPreds);
+#else
   rewardModel->testInstance(inputs, &rewardPreds);
+#endif
 
   float totalVisits = 0.0;
   for (std::map<float, float>::iterator it = rewardPreds.begin(); it != rewardPreds.end(); it++){
@@ -615,7 +620,12 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
   float rewardSum = 0.0;
   // each value
   std::map<float, float> rewardPreds;
+#ifdef REWARDGIVEN
+  setRewards(inputs, &rewardPreds);
+#else
   rewardModel->testInstance(inputs, &rewardPreds);
+#endif
+
 
   if (rewardPreds.size() == 0){
     //cout << "FactoredModel setting state known false" << endl;
@@ -828,4 +838,12 @@ std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, i
 #else
 	return inputs;
 #endif
+}
+
+/**
+ * Set the correct rewards.
+ * FIXME This is for Asterix only.
+ */
+void FactoredModel::setRewards(const std::vector<float> &input, std::map<float, float>* retval) {
+	// TODO
 }

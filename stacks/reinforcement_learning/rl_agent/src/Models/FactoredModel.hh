@@ -79,6 +79,8 @@ private:
   /** to predict feature #fid, which are used? */
   std::vector<float> getFeaturesToPred(std::vector<float> inputs, int fid);
 
+  void setRewards(const std::vector<float> &input, std::map<float, float>* retval);
+
   /** Classifier to predict each feature */
   std::vector<Classifier*> outputModels;
 
