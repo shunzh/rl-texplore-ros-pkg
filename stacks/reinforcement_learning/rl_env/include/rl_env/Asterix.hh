@@ -39,7 +39,7 @@ public:
 
 protected:
   typedef std::pair<float,float> coord_t;
-  enum action_t {NORTH, EAST, SOUTH, WEST, STAY};
+  enum action_t {NORTH, SOUTH, WEST, EAST, STAY};
   enum direct_t {LEFT, RIGHT};
   enum object_t {GHOST, FOOD, NOTHING};
 

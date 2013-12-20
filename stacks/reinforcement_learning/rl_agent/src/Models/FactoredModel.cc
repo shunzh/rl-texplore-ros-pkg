@@ -6,7 +6,7 @@
 
 #include "FactoredModel.hh"
 
-//#define SEPA
+#define SEPA
 #define REWARDGIVEN
 
 FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
@@ -452,7 +452,7 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   // each value
   std::map<float, float> rewardPreds;
 #ifdef REWARDGIVEN
-  setRewards(inputs, &rewardPreds);
+  setRewards(state, act, &rewardPreds);
 #else
   rewardModel->testInstance(inputs, &rewardPreds);
 #endif
@@ -621,7 +621,7 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
   // each value
   std::map<float, float> rewardPreds;
 #ifdef REWARDGIVEN
-  setRewards(inputs, &rewardPreds);
+  setRewards(state, act, &rewardPreds);
 #else
   rewardModel->testInstance(inputs, &rewardPreds);
 #endif
@@ -841,9 +841,36 @@ std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, i
 }
 
 /**
- * Set the correct rewards.
+ * Set the guessed rewards - we cannot reconstruct the original state representation,
+ * so this is just the best guess that we have.
  * FIXME This is for Asterix only.
  */
-void FactoredModel::setRewards(const std::vector<float> &input, std::map<float, float>* retval) {
-	// TODO
+void FactoredModel::setRewards(const std::vector<float> state, int act, std::map<float, float>* retval) {
+	retval->clear();
+
+	int height = state.size() - 2;
+	int width = 15; // FIXME overfit
+	int ns = state[height];
+	int ew = state[height + 1];
+
+	if (act == 0 && ns > 0) {
+		ns--;
+	}
+	else if (act == 1 && ns < height - 1) {
+		ns++;
+	}
+	else if (act == 2 && ew > 0) {
+		ew--;
+	}
+	else if (act == 3 && ew < width - 1) {
+		ew++;
+	}
+
+	float reward = 1;
+
+	if (ew - state[ns] >= -1 && ew - state[ns] <= 1) {
+		reward = -500;
+	}
+
+	(*retval)[reward] = 1;
 }
