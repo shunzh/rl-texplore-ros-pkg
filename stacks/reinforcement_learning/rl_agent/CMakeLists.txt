@@ -77,6 +77,7 @@ rosbuild_add_library(agentlib
   src/newmat/svd.cc 
   src/newmat/newmatrm.cc 
   src/newmat/newmat9.cc
+  src/Config.cpp
 )
 
 rosbuild_add_executable(agent

@@ -45,7 +45,7 @@ const std::vector<float> &Asterix::sensation() const {
 float Asterix::apply(int action) {
 	float reward = 0;
 
-	int killedR = -1000, bonusR = 20;
+	int killedR = 0, bonusR = 20;
 
 	// determine ghost or food
 	setPhase();

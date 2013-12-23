@@ -6,7 +6,6 @@
 
 #include "FactoredModel.hh"
 
-#define SEPA
 #define REWARDGIVEN
 
 FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
@@ -820,24 +819,25 @@ std::vector<float> FactoredModel::subVec(const std::vector<float> &a, const std:
 
 
 std::vector<float> FactoredModel::getFeaturesToPred(std::vector<float> inputs, int fid) {
-#ifdef SEPA
-	std::vector<float> retval;
-	// FIXME overfit
-	int domainRange = 6;
+	if (Config::tranSepa) {
+		std::vector<float> retval;
+		// FIXME overfit
+		int domainRange = 6;
 
-	if (fid < domainRange) {
-		// each agent
-		retval.push_back(inputs[fid]);
+		if (fid < domainRange) {
+			// each agent
+			retval.push_back(inputs[fid]);
+		}
+		else {
+			// self
+			retval.assign(inputs.begin() + domainRange, inputs.end());
+		}
+
+		return retval;
 	}
 	else {
-		// self
-		retval.assign(inputs.begin() + domainRange, inputs.end());
+		return inputs;
 	}
-
-	return retval;
-#else
-	return inputs;
-#endif
 }
 
 /**

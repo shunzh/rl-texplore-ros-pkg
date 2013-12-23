@@ -35,6 +35,7 @@
 #include <rl_agent/Dyna.hh>
 #include <rl_agent/Sarsa.hh>
 
+#include <rl_agent/Config.h>
 
 
 #include <vector>
@@ -44,7 +45,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 
-unsigned NUMEPISODES = 1000; //10; //200; //500; //200;
+unsigned NUMEPISODES = 500; //10; //200; //500; //200;
 const unsigned NUMTRIALS = 1; //30; //30; //5; //30; //30; //50
 unsigned MAXSTEPS = 1000; // per episode
 bool PRINTS = false;
@@ -131,7 +132,6 @@ int main(int argc, char **argv) {
   int history = 0;
   int seed = 1;
   int featureSet = 0; // using domain specific features
-  bool sepa = false;
 
   ostream* out = &std::cout; // cout as default
   char fileName[100];
@@ -630,7 +630,7 @@ int main(int argc, char **argv) {
       break;
 
     case 16:
-    	sepa = true;
+    	Config::tranSepa = true;
     	break;
 
     case 'h':
