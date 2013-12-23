@@ -1,22 +1,14 @@
 *. Enable multiple model learning. OK.
 - Defined set of models in factored model.
 
-*. Different set of features.
-- General. OK
-- Domain-specific. OK
-- Insufficient. OK
-
 *. Feature learning.
-- Related papers:
-  http://www.manoonpong.com/paper/2010/ManoonpongICONIP2010.pdf
-  http://machinelearning.wustl.edu/mlpapers/paper_files/ICML2011Geramifard_473.pdf
+- ?
 
-*. Self-identification.
+*. Separation on transition model.
 - Matthew's paper.
-- Try if done.
+- Try if done. OK, re-running on new reward model
   S -> S' for environmental
   S x A -> S' for self
-  > Ask Todd.
 
 *. Dynamic environment.
 - Proposed: global transition model?
