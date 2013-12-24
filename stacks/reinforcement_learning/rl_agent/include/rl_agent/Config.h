@@ -11,6 +11,7 @@
 class Config {
 public:
 	static bool tranSepa;
+	static bool rewardGiven;
 };
 
 #endif /* CONFIG_H_ */

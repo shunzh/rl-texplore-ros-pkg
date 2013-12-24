@@ -1,6 +1,7 @@
 #!/bin/sh
 
-rosrun rl_experiment experiment --agent texplore --env asterix --features 1 --sepa
+#rosrun rl_experiment experiment --agent texplore --env asterix --features 1 --sepa --rewardGiven
+rosrun rl_experiment experiment --agent texplore --env asterix --features 1
 
 #rosrun rl_experiment experiment --agent texplore --env asterix --features 0
 #rosrun rl_experiment experiment --agent texplore --env asterix --features 1

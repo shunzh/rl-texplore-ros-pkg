@@ -45,7 +45,6 @@
 #include <getopt.h>
 #include <stdlib.h>
 
-unsigned NUMEPISODES = 500; //10; //200; //500; //200;
 const unsigned NUMTRIALS = 1; //30; //30; //5; //30; //30; //50
 unsigned MAXSTEPS = 1000; // per episode
 bool PRINTS = false;
@@ -132,6 +131,8 @@ int main(int argc, char **argv) {
   int history = 0;
   int seed = 1;
   int featureSet = 0; // using domain specific features
+
+  unsigned numepisodes = 250;
 
   ostream* out = &std::cout; // cout as default
   char fileName[100];
@@ -237,7 +238,9 @@ int main(int argc, char **argv) {
     {"nepisodes", 1, 0, 12},
     {"output", 1, 0, 14},
     {"features", 1, 0, 15},
-    {"sepa", 0, 0, 16}
+    {"sepa", 0, 0, 16},
+    {"episodes", 1, 0, 17},
+    {"rewardGiven", 0, 0, 18}
   };
 
   bool epsilonChanged = false;
@@ -612,8 +615,8 @@ int main(int argc, char **argv) {
       break;
 
     case 12:
-      NUMEPISODES = std::atoi(optarg);
-      cout << "Num Episodes: " << NUMEPISODES << endl;
+      numepisodes = std::atoi(optarg);
+      cout << "Num Episodes: " << numepisodes << endl;
       break;
 
     case 14:
@@ -631,6 +634,15 @@ int main(int argc, char **argv) {
 
     case 16:
     	Config::tranSepa = true;
+    	break;
+
+    case 17:
+    	numepisodes = std::atoi(optarg);
+    	cout << "Number of episodes: " << numepisodes << endl;
+    	break;
+
+    case 18:
+    	Config::rewardGiven = true;
     	break;
 
     case 'h':
@@ -947,7 +959,7 @@ int main(int argc, char **argv) {
       //////////////////////////////////
       // non-episodic
       //////////////////////////////////
-      for (unsigned i = 0; i < NUMEPISODES; ++i){
+      for (unsigned i = 0; i < numepisodes; ++i){
 
         std::vector<float> es = e->sensation();
 
@@ -986,7 +998,7 @@ int main(int argc, char **argv) {
       //////////////////////////////////
       // episodic
       //////////////////////////////////
-      for (unsigned i = 0; i < NUMEPISODES; ++i) {
+      for (unsigned i = 0; i < numepisodes; ++i) {
 
         // performance tracking
         float sum = 0;

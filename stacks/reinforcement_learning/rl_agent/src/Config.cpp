@@ -8,4 +8,4 @@
 #include <rl_agent/Config.h>
 
 bool Config::tranSepa = false;
-
+bool Config::rewardGiven = false;

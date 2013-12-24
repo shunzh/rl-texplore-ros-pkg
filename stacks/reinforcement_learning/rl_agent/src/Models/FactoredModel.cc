@@ -6,8 +6,6 @@
 
 #include "FactoredModel.hh"
 
-#define REWARDGIVEN
-
 FactoredModel::FactoredModel(int id, int numactions, int M, int modelType,
                  int predType, int nModels, float treeThreshold,
                  const std::vector<float> &featRange, float rRange,
@@ -450,11 +448,13 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
   float rewardSum = 0.0;
   // each value
   std::map<float, float> rewardPreds;
-#ifdef REWARDGIVEN
-  setRewards(state, act, &rewardPreds);
-#else
-  rewardModel->testInstance(inputs, &rewardPreds);
-#endif
+
+  if (Config::rewardGiven) {
+  	setRewards(state, act, &rewardPreds);
+  }
+  else {
+  	rewardModel->testInstance(inputs, &rewardPreds);
+  }
 
   float totalVisits = 0.0;
   for (std::map<float, float>::iterator it = rewardPreds.begin(); it != rewardPreds.end(); it++){
