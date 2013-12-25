@@ -619,12 +619,12 @@ float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act
   float rewardSum = 0.0;
   // each value
   std::map<float, float> rewardPreds;
-#ifdef REWARDGIVEN
-  setRewards(state, act, &rewardPreds);
-#else
-  rewardModel->testInstance(inputs, &rewardPreds);
-#endif
-
+  if (Config::rewardGiven) {
+  	setRewards(state, act, &rewardPreds);
+  }
+  else {
+  	rewardModel->testInstance(inputs, &rewardPreds);
+  }
 
   if (rewardPreds.size() == 0){
     //cout << "FactoredModel setting state known false" << endl;
