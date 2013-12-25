@@ -23,7 +23,7 @@
 #include <rl_env/CartPole.hh>
 #include <rl_env/LightWorld.hh>
 #include <rl_env/Asterix.hh>
-
+#include <rl_env/AsterixFull.hh>
 
 ////////////
 // Agents //
@@ -799,6 +799,11 @@ int main(int argc, char **argv) {
   else if (strcmp(envType, "asterix") == 0){
     if (PRINTS) cout << "Environment: Asterix\n";
     e = new Asterix(rng, highvar, stochastic, PRINTS, featureSet);
+  }
+
+  else if (strcmp(envType, "asterixFull") == 0){
+    if (PRINTS) cout << "Environment: Full Asterix\n";
+    e = new AsterixFull(rng, highvar, stochastic, PRINTS, featureSet);
   }
 
   // stocks

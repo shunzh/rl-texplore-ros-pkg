@@ -50,7 +50,6 @@ protected:
   void setPhase();
   void print();
 
-private:
   const int height;
   const int width;
 

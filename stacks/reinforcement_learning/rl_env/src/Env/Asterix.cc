@@ -107,18 +107,10 @@ float Asterix::apply(int action) {
 }
 
 void Asterix::setPhase() {
-	int oneRun = (width - 1) * 2;
-
-	// DEBUG
-	if (steps % (oneRun * 2) == 0) {
+	if (steps == 0) {
 		phase = GHOST;
 		for (int i = 0; i < height; i++) objCate[i] = phase;
 	}
-	/*
-	else if (steps % (oneRun * 2) == oneRun) {
-		phase = FOOD;
-		for (int i = 0; i < height; i++) objCate[i] = phase;
-	}*/
 }
 
 void Asterix::resetPhase() {

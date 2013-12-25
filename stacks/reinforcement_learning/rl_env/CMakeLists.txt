@@ -43,6 +43,7 @@ rosbuild_add_library(envlib
   src/Env/stocks.cc
   src/Env/LightWorld.cc
   src/Env/Asterix.cc
+  src/Env/AsterixFull.cc
 )
 
 rosbuild_add_executable(env
