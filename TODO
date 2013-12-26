@@ -1,20 +1,20 @@
 *. Enable multiple model learning. OK.
 - Defined set of models in factored model.
 
-*. Feature learning.
-- ?
+*. Feature Selection.
+- Useful feature subset is dependent on the position of the agent, thus not deterministic.
 
 *. Separation on transition model.
 - Matthew's paper.
-- Try if done. OK, re-running on new reward model
+- Try if done. OK, re-running
   S -> S' for environmental
   S x A -> S' for self
 
-*. Dynamic environment.
-- Proposed: global transition model?
+*. Other model.
+- KNN. Implementing.
+- ANN and SVM.
 
 FUTURE:
 
-Add ANN and SVM.
 Test each model separately.
 Integreate models.

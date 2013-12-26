@@ -294,7 +294,6 @@ void MultipleClassifiers::testInstance(const std::vector<float> &input, std::map
 
 
 float MultipleClassifiers::getConf(const std::vector<float> &input){
-  /*
   if (STDEBUG || CONF_DEBUG) cout << id << " getConf" << endl;
 
   if ((int)infos.size() != nModels){
@@ -310,30 +309,32 @@ float MultipleClassifiers::getConf(const std::vector<float> &input){
     }
   }
 
-  float conf = 0;
+  float maxConf = 0;
 
-  int modelType = modelTypes[modelId];
+  for (int modelId = 0; modelId < nModels; modelId++) {
+  	float conf = 0;
+		int modelType = modelTypes[modelId];
 
-  // for deterministic trees, calculating a distribution of outcomes
-  // calculate kl divergence
-  if (modelType == RMAX || modelType == SLF || modelType == C45TREE ||
-      modelType == STUMP ){ 
-    conf = 1.0 - klDivergence(input);
+		// for deterministic trees, calculating a distribution of outcomes
+		// calculate kl divergence
+		if (modelType == RMAX || modelType == SLF || modelType == C45TREE ||
+				modelType == STUMP ){
+			conf = 1.0 - klDivergence(input);
+		}
+
+		// for continuous trees, providing a single continuous prediction
+		// calcluate variance
+		else {
+			// use scaled sd
+			conf = 1.0 - sqrt(variance(input)) / featRange;
+		}
+
+		if (conf > maxConf) maxConf = conf;
   }
 
-  // for continuous trees, providing a single continuous prediction
-  // calcluate variance
-  else {
-    // use scaled sd
-    conf = 1.0 - sqrt(variance(input)) / featRange;
-  }
+  if (CONF_DEBUG) cout << "return conf: " << maxConf << endl;
 
-  if (CONF_DEBUG) cout << "return conf: " << conf << endl;
-
-  return conf;
-  */
-  std::cerr << "MultipleClassifiers::getConf: Don't call me! Call the corresponding model.";
-  return 0;
+  return maxConf;
 }
 
 // calculate kl divergence of these predictions
