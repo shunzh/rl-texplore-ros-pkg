@@ -8,11 +8,12 @@
 #ifndef NEARESTNEIGHBORS_H_
 #define NEARESTNEIGHBORS_H_
 
-#include "core.hh"
+#include <rl_common/core.hh>
 
-class NearestNeighbors: public Classifier {
+class NearestNeighbor: public Classifier {
 public:
-	NearestNeighbors();
+	NearestNeighbor();
+	NearestNeighbor(NearestNeighbor* n);
 
   virtual bool trainInstances(std::vector<classPair> &instances);
   virtual bool trainInstance(classPair &instance);
@@ -20,7 +21,7 @@ public:
   virtual float getConf(const std::vector<float> &in);
   virtual Classifier* getCopy();
 
-  static float distance(std::vector<float> instanceA, std::vector<float> instanceB);
+  static float distance(const std::vector<float>& instanceA, const std::vector<float>& instanceB);
 
 private:
   std::vector<classPair> data;

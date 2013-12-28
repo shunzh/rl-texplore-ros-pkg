@@ -462,6 +462,9 @@ void MultipleClassifiers::initModels(){
     else if (modelType == ANN) {
       models[i] = new NeuralNetwork(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
+    else if (modelType == KNN) {
+    	models[i] = new NearestNeighbor();
+    }
     else {
       cout << "Invalid model type for this committee " << modelType << endl;
       exit(-1);

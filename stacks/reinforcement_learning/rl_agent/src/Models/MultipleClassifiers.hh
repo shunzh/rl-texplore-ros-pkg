@@ -11,6 +11,7 @@
 #include "../Models/LinearSplitsTree.hh"
 #include "../Models/SupportVM.hh"
 #include "../Models/NeuralNetwork.hh"
+#include "../Models/NearestNeighbor.hh"
 
 #include "../Models/Stump.hh"
 

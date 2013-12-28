@@ -46,7 +46,8 @@ rosbuild_add_library(agentlib
   src/Models/RMaxModel.cc 
   src/Models/SepPlanExplore.cc 
   src/Models/SupportVM.cc 
-  src/Models/NeuralNetwork.cc 
+  src/Models/NeuralNetwork.cc
+  src/Models/NearestNeighbor.cc 
   src/Planners/ValueIteration.cc
   src/Planners/PolicyIteration.cc
   src/Planners/PrioritizedSweeping.cc 

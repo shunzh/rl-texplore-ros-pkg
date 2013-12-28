@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
     n = 0;
     predType = AVERAGE;
     plannerType = PAR_ETUCT_ACTUAL;
-    nmodels = 5;
+    nmodels = Config::modelSize;
     reltrans = true;
     M = 0;
     history = 0;

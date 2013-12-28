@@ -156,7 +156,7 @@ bool FactoredModel::initMDPModel(int nfactors){
     else if (nModels > 1 || modelType == ALLM5TYPES){
       // FIXME expect passing as parameters
       //int modelTypesArray[] = {C45TREE, C45TREE, C45TREE, C45TREE, C45TREE};
-      int modelTypesArray[] = {modelType, modelType, modelType, modelType, modelType};
+      int* modelTypesArray = Config::modelTypesArray;
 
       std::vector<int> modelTypes(modelTypesArray, modelTypesArray + nModels);
 
@@ -174,11 +174,11 @@ bool FactoredModel::initMDPModel(int nfactors){
                                              FEAT_PCT, // remove this pct of feats
                                               EXP_PCT, treeThresh *rRange, stoch, rRange, rng);
 		  if (episodic){
-			terminalModel = new MultipleClassifiers((id * (nfactors+1)) +1+ nfactors,
-												modelTypes, predType,
-												nModels, treeBuildType, 5,
-												FEAT_PCT, // remove this pct of feats
-												EXP_PCT, treeThresh, stoch, 1.0, rng);
+				terminalModel = new MultipleClassifiers((id * (nfactors+1)) +1+ nfactors,
+													modelTypes, predType,
+													nModels, treeBuildType, 5,
+													FEAT_PCT, // remove this pct of feats
+													EXP_PCT, treeThresh, stoch, 1.0, rng);
 		  }
      }
    }
