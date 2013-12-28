@@ -460,7 +460,7 @@ void MultipleClassifiers::initModels(){
       models[i] = new SupportVM(id + i*(1+nModels), mode, freq, 0, featPct, rng);
     }
     else if (modelType == ANN) {
-      models[i] = new NeuralNetwork(id + i*(1+nModels), mode, freq, 0, featPct, rng);
+      models[i] = new NeuralNetwork(id + i*(1+nModels), mode, freq, 0, featPct, rng, 3, 3);
     }
     else if (modelType == KNN) {
     	models[i] = new NearestNeighbor();

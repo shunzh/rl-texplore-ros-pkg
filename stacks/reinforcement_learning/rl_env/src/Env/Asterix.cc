@@ -34,8 +34,12 @@ Asterix::Asterix(Random &rand, bool extraVariation, bool stoch, bool p, int f):
 }
 
 Asterix::~Asterix() {
+	pos.clear();
+	s.clear();
+
 	delete[] objPos;
 	delete[] direction;
+	delete[] objCate;
 }
 
 const std::vector<float> &Asterix::sensation() const {
