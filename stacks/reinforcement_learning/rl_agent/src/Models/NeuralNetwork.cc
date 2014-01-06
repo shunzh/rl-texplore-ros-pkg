@@ -31,12 +31,15 @@ NeuralNetwork::NeuralNetwork(int id, int trainMode, int trainFreq, int m,
   network.layerSize[numLayer - 1] = 1;
 
   // init weights
-  w = new float**[numLayer];
+  w = new float**[numLayer - 1];
 
   for (int i = 1; i < numLayer - 1; i++) {
   	w[i] = new float*[network.layerSize[i]];
 
-  	// TODO
+  	// mapping from layer i to layer i+1
+  	for (int j = 0; j < network.layerSize[i]; j++) {
+  		w[i][j] = new float[network.layerSize[i + 1]];
+  	}
   }
 	pthread_mutex_init(&ann_mutex, NULL);
 }
@@ -82,7 +85,13 @@ void NeuralNetwork::initInputLayer(Network* net,
 
 	int featSize = instances[0].in.size();
 	net->nodes[0] = new Node[featSize];
-	net->layerSize[0] = 0;
+	net->layerSize[0] = featSize;
+
+	w[0] = new float*[featSize];
+
+	for (int j = 0; j < network.layerSize[0]; j++) {
+		w[0][j] = new float[network.layerSize[1]];
+	}
 }
 
 void NeuralNetwork::resetNetwork(Network* net) {
