@@ -44,10 +44,16 @@ private:
 	const Random rng;
 
 	Network network;
+	float*** w;
 
 	pthread_mutex_t ann_mutex;
 
 	void initInputLayer(Network* net, std::vector<classPair>& instances);
+	void resetNetwork(Network* net);
+	std::vector<float> forwardPass(std::vector<float> in);
+	void backPorp(std::vector<float> error);
+
+	static float sigmoid(float x);
 };
 
 #endif /* MULTIPLELP_H_ */

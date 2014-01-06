@@ -21,8 +21,8 @@ NeuralNetwork::NeuralNetwork(int id, int trainMode, int trainFreq, int m,
 	network.layerSize[0] = 0;
 
 	// hidden layers
-	for (int i = 0; i < numLayer - 1; i++) {
-		network.nodes[i] = new Node[nodesPerLayer + 1];
+	for (int i = 1; i < numLayer - 1; i++) {
+		network.nodes[i] = new Node[nodesPerLayer + 1]; // plus a bias node
 		network.layerSize[i] = nodesPerLayer + 1;
 	}
 
@@ -30,6 +30,14 @@ NeuralNetwork::NeuralNetwork(int id, int trainMode, int trainFreq, int m,
 	network.nodes[numLayer - 1] = new Node[1];
   network.layerSize[numLayer - 1] = 1;
 
+  // init weights
+  w = new float**[numLayer];
+
+  for (int i = 1; i < numLayer - 1; i++) {
+  	w[i] = new float*[network.layerSize[i]];
+
+  	// TODO
+  }
 	pthread_mutex_init(&ann_mutex, NULL);
 }
 
@@ -45,7 +53,9 @@ bool NeuralNetwork::trainInstance(classPair& instance) {
 
 bool NeuralNetwork::trainInstances(std::vector<classPair>& instances) {
 	// first run
-	if (network.nodes[0] == NULL) initInputLayer(&network, instances);
+	if (network.nodes[0] == NULL) {
+		initInputLayer(&network, instances);
+	}
 
 	// backprop TODO
 }
@@ -73,4 +83,19 @@ void NeuralNetwork::initInputLayer(Network* net,
 	int featSize = instances[0].in.size();
 	net->nodes[0] = new Node[featSize];
 	net->layerSize[0] = 0;
+}
+
+void NeuralNetwork::resetNetwork(Network* net) {
+
+}
+
+std::vector<float> NeuralNetwork::forwardPass(std::vector<float> in) {
+}
+
+void NeuralNetwork::backPorp(std::vector<float> error) {
+}
+
+float NeuralNetwork::sigmoid(float x) {
+	// fast sigmoid function
+	return x / (1 + std::abs(x));
 }
