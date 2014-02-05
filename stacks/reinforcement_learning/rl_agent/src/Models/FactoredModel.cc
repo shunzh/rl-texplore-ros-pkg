@@ -511,8 +511,6 @@ float FactoredModel::getSingleSAInfo(const std::vector<float> &state, int act, S
 float FactoredModel::getStateActionInfo(const std::vector<float> &state, int act, StateActionInfo* retval){
   if (MODEL_DEBUG) cout << "getStateActionInfo, " << &state <<  ", " << act << endl;
 
-
-
   if (MODEL_DEBUG){
     for (unsigned i = 0; i < state.size(); i++){
       cout << state[i] << ", ";
